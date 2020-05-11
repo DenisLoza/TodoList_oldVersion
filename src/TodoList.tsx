@@ -13,7 +13,7 @@ type TodoListType = {
 }
 
 export function TodoList(props: TodoListType) {
-    debugger
+    
     return (
       <div>
        <h3>{props.title}</h3>
@@ -22,9 +22,16 @@ export function TodoList(props: TodoListType) {
           <button>+</button>
         </div>
           <ul>
-            <li><input type="checkbox" checked={props.tasks[0].isDone}/><span>{props.tasks[0].title}</span></li> 
+            { props.tasks.map( t => 
+                <li>
+                    <input type="checkbox" checked={t.isDone}/><span>{t.title}</span>
+                    <button onClick={ () => { alert(t.id)}}>x</button>
+                </li>
+            )
+            }
+            {/* <li><input type="checkbox" checked={props.tasks[0].isDone}/><span>{props.tasks[0].title}</span></li> 
             <li><input type="checkbox" checked={props.tasks[1].isDone}/><span>{props.tasks[1].title}</span></li>
-            <li><input type="checkbox" checked={props.tasks[2].isDone}/><span>{props.tasks[2].title}</span></li>
+            <li><input type="checkbox" checked={props.tasks[2].isDone}/><span>{props.tasks[2].title}</span></li> */}
           </ul>
             <div>
               <button>All</button>
