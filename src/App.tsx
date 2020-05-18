@@ -5,7 +5,7 @@ import {tasksType, TodoList} from './TodoList';
 import {v1} from 'uuid';
 
 
-export type FilterValuesType = "all" | "completed" | "active";
+export type FilterValuesType = "All" | "Completed" | "Active";
 
 
 function App() {
@@ -31,33 +31,34 @@ function App() {
 
   // Хук1 следит за состоянием tasks1
   let [tasks, setTasks] = useState(tasks1);
-  // Хук2 следит за состоянием списка после нажатия кнопок all-active-completed
-  let [filter, setFilter] = useState<FilterValuesType>("all");
 
-  // фильтр задач на удаление по нажатию клавиши Х
+  // фильтр тасок на удаление по нажатию клавиши Х взаимодействует с хук1
   function removeTask(id: string) {
     let filtredTasks = tasks.filter(t => t.id !== id)
     setTasks(filtredTasks);
   }
+
+  // Хук2 следит за состоянием списка тасок после нажатия кнопок all-active-completed
+  let [filter, setFilter] = useState<FilterValuesType>("All");
 
   // Функция передает значение по нажатию кнопок "all-active-completed" в ф-цию setFilter для хука2
   function changeFilter(value: FilterValuesType) {
     setFilter(value);
   }
 
-  // Функция добавления новой задачи по клику на кнопку +
+  // Функция добавления новой таски по клику на кнопку +
   function addTask(title: string) {
-    let task = {id: v1(), title: title, isDone: false};
-    let newTasks = [task, ...tasks];
+    let newTask = {id: v1(), title: title, isDone: false};
+    let newTasks = [newTask, ...tasks];  /*Создаем новый массив добавляя новую таcку в начало и остальные таски из старого массива tasks*/
     setTasks(newTasks);
   }
 
-  // Фильтр задач по нажатию кнопок completed - active
+  // Фильтр тасок по нажатию кнопок completed - active
   let tasksForTodolist = tasks;
-  if (filter === "completed") {
+  if (filter === "Completed") {
     tasksForTodolist = tasks.filter(t => t.isDone === true);
   }
-  if (filter === "active") {
+  if (filter === "Active") {
     tasksForTodolist = tasks.filter(t => t.isDone === false);
   }
 
@@ -69,8 +70,6 @@ function App() {
                   removeTask={removeTask}
                   changeFilter={changeFilter}
                   addTask={addTask}/>
-        {/* <TodoList title="moves" tasks={tasks1}/>
-      <TodoList title="songs"tasks={tasks2}/> */}
       </div>
   );
 }
