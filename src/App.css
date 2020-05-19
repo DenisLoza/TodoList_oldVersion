@@ -6,3 +6,28 @@
 .App > div {
   margin-right: 50px;
 }
+/*Выделяет красным цветом инпут при ошибке*/
+.error {
+  border: red 1px solid;
+}
+/*Выделяет красным цветом сообщение об ошибке*/
+.error-message {
+  color: red;
+}
+/*Подсвечивает активную кнопку All-Active-Completed*/
+.active-filter {
+  background-color: beige;
+}
+
+/*Устанавливаем полупрозрачность для выполненных тасок*/
+.is-done {
+  opacity: 0.6;
+}
+
+.btn-new-todo {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: greenyellow;
+  margin-bottom: 10px;
+}

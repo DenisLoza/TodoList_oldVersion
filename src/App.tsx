@@ -10,12 +10,14 @@ export type FilterValuesType = "All" | "Completed" | "Active";
 
 function App() {
 
-  let tasks1: Array<tasksType> = [
+  // Переменная завернута в Хук1 useState
+let [tasks, setTasks] = useState( [
     {id: v1(), title: "HTML & CSS ", isDone: true},
     {id: v1(), title: "JS ", isDone: false},
     {id: v1(), title: "Reakt ", isDone: true},
     {id: v1(), title: "Redux ", isDone: true},
-  ]
+    {id: v1(), title: "Node JS ", isDone: false},
+  ]);
 
   // let tasks2: Array<tasksType> = [
   //   { id: 1.0, title: "Batman ", isDone: true },
@@ -29,13 +31,20 @@ function App() {
   //   { id: 2.2, title: "Metallica ", isDone: true },
   // ]
 
-  // Хук1 следит за состоянием tasks1
-  let [tasks, setTasks] = useState(tasks1);
 
   // фильтр тасок на удаление по нажатию клавиши Х взаимодействует с хук1
   function removeTask(id: string) {
     let filtredTasks = tasks.filter(t => t.id !== id)
     setTasks(filtredTasks);
+  }
+
+  // Функция для обработки чекбокса таски выполнено или не выполнено
+  function changeStatus (id: string, isDone: boolean) {
+    let task = tasks.find(t => t.id === id);
+    if (task) {
+      task.isDone = isDone;
+      setTasks([...tasks]); /*Копируем массив тасок через деструктуризацию и отдаем в useState для перерисовки*/
+    }
   }
 
   // Хук2 следит за состоянием списка тасок после нажатия кнопок all-active-completed
@@ -50,7 +59,7 @@ function App() {
   function addTask(title: string) {
     let newTask = {id: v1(), title: title, isDone: false};
     let newTasks = [newTask, ...tasks];  /*Создаем новый массив добавляя новую таcку в начало и остальные таски из старого массива tasks*/
-    setTasks(newTasks);
+    setTasks(newTasks); /*Отдаем новый полученный список тасок в useState для изменения*/
   }
 
   // Фильтр тасок по нажатию кнопок completed - active
@@ -62,14 +71,22 @@ function App() {
     tasksForTodolist = tasks.filter(t => t.isDone === false);
   }
 
-  // Отрисовка списка задач
+  // Функция для добавления нового листа дел
+  const addBoard = () => {
+    console.log("Hello");
+  }
+
+  // Отрисовка списка тасок
   return (
       <div className="App">
-        <TodoList title="to learn"
+        <TodoList title="What to learn"
+                  filter={filter} /*Св-во передает значение класса для активной кнопки all-active-comp*/
                   tasks={tasksForTodolist}
                   removeTask={removeTask}
                   changeFilter={changeFilter}
-                  addTask={addTask}/>
+                  addTask={addTask}
+                  changeTaskStatus={changeStatus}
+                  addBoard={addBoard}/>
       </div>
   );
 }
