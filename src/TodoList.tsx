@@ -10,14 +10,17 @@ export type tasksType = {
 }
 // Типизируем данные для всего Списка дел
 type TodoListType = {
+    id: string
+    key: string
     title: string
     filter: FilterValuesType
     tasks: Array<tasksType>
-    removeTask: (id: string) => void
-    changeFilter: (value: FilterValuesType) => void
-    addTask: (NewTaskTitle: string) => void
-    changeTaskStatus:(id: string, isDone: boolean) => void;
-    addBoard: () => void;
+    removeTask: (id: string, todoList: string) => void
+    changeFilter: (value: FilterValuesType, todoListId: string) => void
+    addTask: (NewTaskTitle: string, todoList: string) => void
+    changeTaskStatus:(id: string, isDone: boolean, todoList: string) => void
+    addBoard: () => void
+    removeTodoList: (todoListId: string) => void
 }
 
 
@@ -32,7 +35,7 @@ export function TodoList(props: TodoListType) {
     function addTask() {
         let trimedTitle = NewTaskTitle.trim(); /*Функция убирает все пробелы из строки и то, что осталось засовывает в переменную */
         if (trimedTitle) {               /*Таска добавляется если строка не пустая*/
-            props.addTask(trimedTitle); /*Добавляется таска, но убираются слева и справа все пробелы*/
+            props.addTask(trimedTitle, props.id); /*Добавляется таска, но убираются слева и справа все пробелы*/
         } else {
             setError("Title is required!")
         }
@@ -48,22 +51,28 @@ export function TodoList(props: TodoListType) {
     /*При нажатии на Enter (charCode=13) добавляется новая таска*/
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.charCode === 13) {
-            props.addTask(NewTaskTitle);
+            props.addTask(NewTaskTitle, props.id);
             setNewTaskTitle("");
         }
     }
 
 
 
-    const onAllClickHandler = () => props.changeFilter("All");
-    const onActiveClickHandler = () => props.changeFilter("Active");
-    const onCompletedClickHandler = () => props.changeFilter("Completed");
+    const onAllClickHandler = () => props.changeFilter("All", props.id);
+    const onActiveClickHandler = () => props.changeFilter("Active", props.id);
+    const onCompletedClickHandler = () => props.changeFilter("Completed", props.id);
+
+    // Удаление таски целиком
+    const deleteTask = () => props.removeTodoList(props.id);
 
     return (
         // Вывод названия Списка дел и поле ввода input с кнопкой "+"
         <div>
             <h3>{props.title}</h3>
+            <div className={"btn"}>
             <button className={"btn-new-todo"} onClick={props.addBoard}>+ New</button>
+            <button className={"btn-del-todo"} onClick={deleteTask}>- Delete</button>
+            </div>
             <div>
                 <input value={NewTaskTitle}
                        onChange={onNewTitleChangeHandler}
@@ -78,11 +87,11 @@ export function TodoList(props: TodoListType) {
             {/*Формирование списка тасок*/}
             <ul>
                 {props.tasks.map(t => {
-                    const onRemoveHandler = () => {props.removeTask(t.id);}
+                    const onRemoveHandler = () => {props.removeTask(t.id, props.id);}
 
                     // Функция следит за событием на чек боксе таски и отдает значение в стейт
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(t.id, e.currentTarget.checked);
+                        props.changeTaskStatus(t.id, e.currentTarget.checked, props.id);
                     }
                     /*Если таска выполнена, то класс "is-done" если нет, то класса нет*/
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>

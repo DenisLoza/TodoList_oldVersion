@@ -24,10 +24,17 @@
   opacity: 0.6;
 }
 
+.btn {
+  display: flex;
+  justify-content: space-around;
+}
 .btn-new-todo {
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
   background-color: greenyellow;
   margin-bottom: 10px;
+}
+
+.btn-del-todo {
+  background-color: crimson;
+  margin-bottom: 10px;
+  color: white;
 }
