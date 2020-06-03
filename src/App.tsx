@@ -3,6 +3,7 @@ import './App.css';
 import {tasksType, TodoList} from './TodoList';
 // Библиотека для генерации уникальных id
 import {v1} from 'uuid';
+import {AddItemForm} from "./AddItemForm";
 
 
 export type FilterValuesType = "All" | "Completed" | "Active";
@@ -26,17 +27,17 @@ function App() {
   // Состояние всех туду листов. Хук useState
   let [todoList, setTodoList] = useState <Array<todoListType>> ([
     { id: todoListId1, title: "Whats to learn #1", filter: "All" },
-    { id: todoListId2, title: "Whats to learn #2", filter: "Active" }
+    { id: todoListId2, title: "Whats to learn #2", filter: "All" }
   ]);
 
   // ОТДЕЛЬНЫЙ todo List
   let [tasks, setTasks] = useState <TasksStateType> ({
     [todoListId1]: [
-      {id: v1(), title: "HTML & CSS ", isDone: true},
-      {id: v1(), title: "JS ", isDone: false},
-      {id: v1(), title: "React ", isDone: true},
-      {id: v1(), title: "Redux ", isDone: true},
-      {id: v1(), title: "Node JS ", isDone: false},
+      {id: v1(), title: "HTML & CSS", isDone: true},
+      {id: v1(), title: "JS", isDone: false},
+      {id: v1(), title: "React", isDone: true},
+      {id: v1(), title: "Redux", isDone: true},
+      {id: v1(), title: "Node JS", isDone: false},
     ],
     [todoListId2]: [
       {id: v1(), title: "Milk", isDone: true},
@@ -59,11 +60,15 @@ function App() {
 
   // Функция для обработки чекбокса таски выполнено или не выполнено
   function changeStatus (id: string, isDone: boolean, todoListId: string) {
-    let todoList = tasks[todoListId];
-    let task = todoList.find(t => t.id === id);
+    // достаем нужный массив по todoListId
+    let todoTasks = tasks[todoListId];
+    // ищем нужную таску
+    let task = todoTasks.find(t => t.id === id);
+    // изменим таску, если она нашлась
     if (task) {
       task.isDone = isDone;
-      setTasks({...tasks}); /*Копируем массив тасок через деструктуризацию и отдаем в useState для перерисовки*/
+      // копируем массив тасок через деструктуризацию и отдаем в useState для перерисовки
+      setTasks({...tasks});
     }
   }
 
@@ -100,11 +105,41 @@ function App() {
     setTasks({...tasks})
   }
 
-  // Функция для добавления нового листа дел
+  // ПОКА НЕ РАБОТАЕТ. Заглушка!!!  Функция для кнопки +Add
   const addBoard = () => {
     console.log("Hello");
   }
 
+  // Функция добавления новой таски
+  function addTodoList(title: string) {
+    const newTodoListId: string = v1()
+    const newTodoList: todoListType = {
+      id: newTodoListId,
+      title: title,
+      filter: "All"
+    }
+    setTodoList([newTodoList, ...todoList])
+    setTasks({
+      ...tasks,
+      [newTodoListId]: []
+    })
+  }
+
+  function changeTitle(taskId: string, newTitle: string, todoListId: string) {
+    let task = tasks[todoListId].find(t => t.id === taskId)
+    if (task) {
+      task.title = newTitle;
+      setTasks({...tasks})
+    }
+  }
+
+  function changeTodoListTitle(id: string, newTitle: string) {
+    const newTodoList = todoList.find (tl => tl.id === id)
+    if (newTodoList) {
+      newTodoList.title = newTitle
+      setTodoList([...todoList])
+    }
+  }
 
   // Отрисовка списка тасок
   return (
@@ -132,9 +167,15 @@ function App() {
                       addTask={addTask}
                       changeTaskStatus={changeStatus}
                       addBoard={addBoard}
-                      removeTodoList={removeTodoList}/>
+                      removeTodoList={removeTodoList}
+                      changeTitle={changeTitle}
+                      changeTodoListTitle={changeTodoListTitle}/>
             )
         })}
+        <div className="addItemForm">
+          <h3>+ add NEW Task</h3>
+          <AddItemForm addItem={addTodoList}/>
+        </div>
       </div>
   )
 };
