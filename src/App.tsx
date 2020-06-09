@@ -4,6 +4,8 @@ import {tasksType, TodoList} from './TodoList';
 // Библиотека для генерации уникальных id
 import {v1} from 'uuid';
 import {AddItemForm} from "./AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {ClearAll} from "@material-ui/icons";
 
 
 export type FilterValuesType = "All" | "Completed" | "Active";
@@ -48,7 +50,6 @@ function App() {
     ]
   });
 
-
   // фильтр тасок на удаление по нажатию клавиши Х взаимодействует с хук1
   function removeTask(id: string, todoListId: string) {
     // Через переменную todoList мы узнаем конкретный тудулист, например: todoListId1
@@ -87,7 +88,6 @@ function App() {
     setTodoList([...todoList]);
   }
 
-
   // Функция добавления новой таски по клику на кнопку +
   function addTask(title: string, todoListId: string) {
     let newTask = {id: v1(), title: title, isDone: false};
@@ -103,11 +103,6 @@ function App() {
     // Удаляем все таски в удаленном туду листе
     delete tasks[todoListId];
     setTasks({...tasks})
-  }
-
-  // ПОКА НЕ РАБОТАЕТ. Заглушка!!!  Функция для кнопки +Add
-  const addBoard = () => {
-    console.log("Hello");
   }
 
   // Функция добавления новой таски
@@ -142,11 +137,26 @@ function App() {
   }
 
   // Отрисовка списка тасок
+
   return (
       <div className="App">
-
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton edge="start" color="inherit" aria-label="menu">
+                <ClearAll />
+              </IconButton>
+              <Typography variant="h6">
+                ToDo
+              </Typography>
+              <Button color="inherit">Login</Button>
+            </Toolbar>
+          </AppBar>
+        <Container fixed>
+          <Grid container style={{ padding: "10px"}}>
+            <AddItemForm addItem={addTodoList}/>
+          </Grid>
+          <Grid container spacing={3}>
         {todoList.map(tl => {
-
           // Фильтр тасок по нажатию кнопок completed - active
           let tasksForTodoList = tasks[tl.id];
           if (tl.filter === "Completed") {
@@ -157,6 +167,8 @@ function App() {
           }
 
         return (
+            <Grid item>
+              <Paper style={{ padding: "10px" }}>
             <TodoList id={tl.id}
                       key={tl.id}
                       title={tl.title}
@@ -166,18 +178,18 @@ function App() {
                       changeFilter={changeFilter}
                       addTask={addTask}
                       changeTaskStatus={changeStatus}
-                      addBoard={addBoard}
                       removeTodoList={removeTodoList}
                       changeTitle={changeTitle}
-                      changeTodoListTitle={changeTodoListTitle}/>
+                      changeTodoListTitle={changeTodoListTitle}
+            />
+              </Paper>
+            </Grid>
             )
         })}
-        <div className="addItemForm">
-          <h3>+ add NEW Task</h3>
-          <AddItemForm addItem={addTodoList}/>
-        </div>
+          </Grid>
+        </Container>
       </div>
   )
-};
+}
 
 export default App;

@@ -1,11 +1,10 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import './AddItemForm.module.css';
-
+import {Button, TextField} from "@material-ui/core";
 
 type PropsType = {
     addItem: (NewTaskTitle: string) => void
 }
-
 
 export function AddItemForm(props: PropsType) {
 
@@ -34,27 +33,30 @@ export function AddItemForm(props: PropsType) {
     /*При нажатии на Enter (charCode=13) добавляется новая таска*/
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.charCode === 13) {
-            props.addItem(NewTaskTitle);
+            let trimedTitle = NewTaskTitle.trim();
+            trimedTitle ? props.addItem(NewTaskTitle) : setError("Title is required!")
             setNewTaskTitle("");
         }
     }
 
-
     return (
         // Вывод названия Списка дел и поле ввода input с кнопкой "+"
-        <div>
-            <div className={"btn"}>
-            {/*<button className={"btn-new-todo"} onClick={props.addBoard}>+ New</button>*/}
-            </div>
+        <div className="App">
+
             <div>
-                <input value={NewTaskTitle}
-                       onChange={onNewTitleChangeHandler}
-                       onKeyPress={onKeyPressHandler}
-                    /*Если ошибка, то к input добавится класс "error", если нет, класс не добавиться*/
-                       className={error ? "error" : ""}/>
-                <button onClick={addItem}>+</button>
-                {/*Если ошибка, в div добавится класс error-message и напишется содержимое переменной error*/}
-                {error && <div className={"error-message"}>{error}</div>}
+                <TextField label="add new ..."
+                           value={NewTaskTitle}
+                           id="standard-basic"
+                           onChange={onNewTitleChangeHandler}
+                           onKeyPress={onKeyPressHandler}
+                           /*Если ошибка, то добавится класс "error: true", если нет, класс не добавиться*/
+                           error={!!error}
+                           helperText={error}
+                />
+                <Button onClick={addItem}
+                        variant={"contained"}
+                        color={"primary"}>+
+                </Button>
             </div>
         </div>
     )

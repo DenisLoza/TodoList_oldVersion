@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {TextField} from "@material-ui/core";
 
 type EditableSpanPropsType = {
     value: string
@@ -39,7 +40,7 @@ function EditableSpan(props: EditableSpanPropsType) {
     return (
         editMode
                      // В значение input подставляем наименование таски
-            ? <input value={newTaskTitle}
+            ? <TextField value={newTaskTitle}
                      // Включает автофокус
                      autoFocus={true}
                      // Если потерян фокус, то обычный режим отображения
