@@ -7,7 +7,7 @@ import {Button, Checkbox, IconButton} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-// Типизируем список тасок (id, название, состояние cheked)
+// Типизируем список тасок (id, название, состояние checked)
 export type tasksType = {
     id: string
     title: string
@@ -23,7 +23,7 @@ type TodoListType = {
     removeTask: (id: string, todoList: string) => void
     changeFilter: (value: FilterValuesType, todoListId: string) => void
     addTask: (NewTaskTitle: string, todoList: string) => void
-    changeTaskStatus:(id: string, isDone: boolean, todoList: string) => void
+    changeTaskStatus: (id: string, isDone: boolean, todoList: string) => void
     removeTodoList: (todoListId: string) => void
     changeTitle: (taskId: string, newTitle: string, todoListId: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
@@ -35,17 +35,17 @@ export function TodoList(props: TodoListType) {
     const addNewTask = (title: string) => {
         props.addTask(title, props.id)
     }
-     // Ф-ция изменения названия титула списка задач
+    // Ф-ция изменения названия титула списка задач
     const changeTodoListTitle = (newTitle: string) => {
-        props.changeTodoListTitle (props.id, newTitle)
+        props.changeTodoListTitle(props.id, newTitle)
     }
 
-    const onAllClickHandler = () => props.changeFilter("All", props.id);
-    const onActiveClickHandler = () => props.changeFilter("Active", props.id);
-    const onCompletedClickHandler = () => props.changeFilter("Completed", props.id);
+    const onAllClickHandler = () => props.changeFilter("All", props.id)
+    const onActiveClickHandler = () => props.changeFilter("Active", props.id)
+    const onCompletedClickHandler = () => props.changeFilter("Completed", props.id)
 
     // Удаление таски целиком
-    const deleteTask = () => props.removeTodoList(props.id);
+    const deleteTask = () => props.removeTodoList(props.id)
 
     return (
         // Вывод названия Списка дел и поле ввода input с кнопкой "+"
@@ -54,19 +54,21 @@ export function TodoList(props: TodoListType) {
                               onChange={changeTodoListTitle}/>
                 <IconButton aria-label="delete"
                             onClick={deleteTask}>
-                    <DeleteIcon />
+                    <DeleteIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addNewTask} />
+            <AddItemForm addItem={addNewTask}/>
 
             <div>
                 {props.tasks.map(t => {
 
-                    const onRemoveHandler = () => {props.removeTask(t.id, props.id);}
+                    const onRemoveHandler = () => {
+                        props.removeTask(t.id, props.id)
+                    }
 
                     // Функция следит за событием на чек боксе таски и отдает значение в стейт
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(t.id, e.currentTarget.checked, props.id);
+                        props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
                     }
 
                     const onChangeTaskTitle = (newValue: string) => {
@@ -75,7 +77,7 @@ export function TodoList(props: TodoListType) {
 
                     /*Если таска выполнена, то класс "is-done" если нет, то класса нет*/
                     return <div key={t.id}
-                               className={t.isDone ? "is-done" : ""}>
+                                className={t.isDone ? "is-done" : ""}>
                         <Checkbox checked={t.isDone}
                                   color={"primary"}
                                   onChange={onChangeHandler}
@@ -85,13 +87,13 @@ export function TodoList(props: TodoListType) {
                         />
                         <IconButton aria-label="delete"
                                     onClick={onRemoveHandler}>
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small"/>
                         </IconButton>
                     </div>
                 })
                 }
             </div>
-            <div style={{ paddingTop: "20px"}}>
+            <div style={{paddingTop: "20px"}}>
                 <Button variant={props.filter === "All" ? "outlined" : "text"}
                         onClick={onAllClickHandler}>All</Button>
                 <Button variant={props.filter === "Active" ? "outlined" : "text"}

@@ -1,5 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {TextField} from "@material-ui/core";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react"
+import {TextField} from "@material-ui/core"
 
 type EditableSpanPropsType = {
     value: string
@@ -39,17 +39,17 @@ function EditableSpan(props: EditableSpanPropsType) {
 
     return (
         editMode
-                     // В значение input подставляем наименование таски
+            // В значение input подставляем наименование таски
             ? <TextField value={newTaskTitle}
-                     // Включает автофокус
-                     autoFocus={true}
-                     // Если потерян фокус, то обычный режим отображения
-                     onBlur={activateViewMode}
-                     // Передает введеные значения в input в локальный стейт
-                     onChange={onNewTitleChangeHandler}
-                     // Действия при нажатии на Enter
-                     onKeyPress={onKeyPressHandler}/>
-                     // При двойном клике на span активируется режим EditMode
+                // Включает автофокус
+                         autoFocus={true}
+                // Если потерян фокус, то обычный режим отображения
+                         onBlur={activateViewMode}
+                // Передает введеные значения в input в локальный стейт
+                         onChange={onNewTitleChangeHandler}
+                // Действия при нажатии на Enter
+                         onKeyPress={onKeyPressHandler}/>
+            // При двойном клике на span активируется режим EditMode
             : <span onDoubleClick={activateEditMode}>{props.value}</span>
     )
 }

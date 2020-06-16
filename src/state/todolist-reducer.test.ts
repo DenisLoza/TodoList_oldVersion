@@ -1,0 +1,91 @@
+import {v1} from "uuid";
+import {
+    AddTodoListAC,
+    ChangeTodoListFilterAC,
+    ChangeTodoListTitleAC,
+    RemoveTodoListAC,
+    todoListsReducer
+} from "./todolists-reducer";
+import {FilterValuesType, todoListType} from "../App";
+
+// ТЕСТ. УДАЛЕНИЕ TODO ЛИСТА
+test("correct todoList should be removed", () => {
+    // генерируем персональный id для каждого объекта в массиве
+    let todoListId1 = v1()
+    let todoListId2 = v1()
+    // Начальные значения: два объекта в массиве
+    const startState: Array<todoListType> = [
+        {id: todoListId1, title: "What to learn", filter: "All"},
+        {id: todoListId2, title: "What to buy", filter: "All"}
+    ]
+    // на выход передаем: начальный стэйт и id объекта, который нужно будет удалить
+    const endState = todoListsReducer(startState, RemoveTodoListAC(todoListId1))
+    // проверочные значения: длинна полученного массива = 1 (один объекта)
+    expect(endState.length).toBe(1)
+    // проверочные значения: второй объект в массиве станет первым
+    expect(endState[0].id).toBe(todoListId2)
+})
+
+// ТЕСТ. ДОБАВЛЕНИЕ TODO ЛИСТА
+test("correct todoList should be added", () => {
+    // генерируем персональный id для каждого объекта в массиве
+    let todoListId1 = v1()
+    let todoListId2 = v1()
+
+    let newTodoListTitle = "New TodoList"
+    // Начальные значения: два объекта в массиве
+    const startState: Array<todoListType> = [
+        {id: todoListId1, title: "What to learn", filter: "All"},
+        {id: todoListId2, title: "What to buy", filter: "All"}
+    ]
+    // на выход передаем: начальный стэйт и id объекта, который нужно будет добавить
+    const endState = todoListsReducer(startState, AddTodoListAC(newTodoListTitle))
+    // проверочные значения: длинна полученного массива = 3 (добавится еще один объект)
+    expect(endState.length).toBe(3)
+    // проверочные значения: третий объект в массиве получит название "New TodoList"
+    expect(endState[2].title).toBe(newTodoListTitle)
+    // проверочные значения: третий объект в массиве получит filter "All"
+    expect(endState[2].filter).toBe("All")
+})
+
+// ТЕСТ. ИЗМЕНЕНИЕ НАИМЕНОВАНИЯ TODO ЛИСТА
+test("correct todoList should change it's name", () => {
+    // генерируем персональный id для каждого объекта в массиве
+    let todoListId1 = v1()
+    let todoListId2 = v1()
+
+    let newTodoListTitle = "New TodoList"
+    // Начальные значения: два объекта в массиве
+    const startState: Array<todoListType> = [
+        {id: todoListId1, title: "What to learn", filter: "All"},
+        {id: todoListId2, title: "What to buy", filter: "All"}
+    ]
+    const action = ChangeTodoListTitleAC(newTodoListTitle, todoListId2)
+    // на выход передаем: начальный стэйт и id объекта, имя которого нужно будет изменить на newTodoListTitle
+    const endState = todoListsReducer(startState, action)
+    // проверочные значения: первый объект массива будет иметь название "What to learn"
+    expect(endState[0].title).toBe("What to learn")
+    // проверочные значения: второй объект в массиве получит новое название "New TodoList"
+    expect(endState[1].title).toBe(newTodoListTitle)
+})
+
+// ТЕСТ. ИЗМЕНЕНИЕ НАИМЕНОВАНИЯ TODO ЛИСТА
+test("correct filter of todoList should be change", () => {
+    // генерируем персональный id для каждого объекта в массиве
+    let todoListId1 = v1()
+    let todoListId2 = v1()
+
+    let newFilter: FilterValuesType = "Completed"
+    // Начальные значения: два объекта в массиве
+    const startState: Array<todoListType> = [
+        {id: todoListId1, title: "What to learn", filter: "All"},
+        {id: todoListId2, title: "What to buy", filter: "All"}
+    ]
+    const action = ChangeTodoListFilterAC(newFilter, todoListId2)
+    // на выход передаем: начальный стэйт и id объекта, фильтр которого нужно будет изменить на newFilter
+    const endState = todoListsReducer(startState, action)
+    // проверочные значения: первый объект массива будет иметь фильтр "All"
+    expect(endState[0].filter).toBe("All")
+    // проверочные значения: второй объект в массиве получит новое значение фильтра "Completed"
+    expect(endState[1].filter).toBe(newFilter)
+})
