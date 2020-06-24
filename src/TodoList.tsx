@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import './TodoList.css';
-import {FilterValuesType} from './App';
+import {filterValuesType} from './App';
 import {AddItemForm} from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
@@ -14,14 +14,14 @@ export type tasksType = {
     isDone: boolean
 }
 // Типизируем данные для всего Списка дел
-type TodoListType = {
+type todoListType = {
     id: string
     key: string
     title: string
-    filter: FilterValuesType
+    filter: filterValuesType
     tasks: Array<tasksType>
     removeTask: (id: string, todoList: string) => void
-    changeFilter: (value: FilterValuesType, todoListId: string) => void
+    changeFilter: (value: filterValuesType, todoListId: string) => void
     addTask: (NewTaskTitle: string, todoList: string) => void
     changeTaskStatus: (id: string, isDone: boolean, todoList: string) => void
     removeTodoList: (todoListId: string) => void
@@ -30,7 +30,7 @@ type TodoListType = {
 }
 
 
-export function TodoList(props: TodoListType) {
+export function TodoList(props: todoListType) {
 
     const addNewTask = (title: string) => {
         props.addTask(title, props.id)

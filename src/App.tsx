@@ -8,13 +8,13 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {ClearAll} from "@material-ui/icons"
 
 
-export type FilterValuesType = "All" | "Completed" | "Active"
+export type filterValuesType = "All" | "Completed" | "Active"
 export type todoListType ={
   id: string
   title: string
-  filter: FilterValuesType
+  filter: filterValuesType
 }
-export type TasksStateType = {
+export type tasksStateType = {
   [key: string]: Array<tasksType>
 }
 
@@ -32,7 +32,7 @@ function App() {
   ])
 
   // ОТДЕЛЬНЫЙ todo List
-  let [tasks, setTasks] = useState<TasksStateType>({
+  let [tasks, setTasks] = useState<tasksStateType>({
     [todoListId1]: [
       {id: v1(), title: "HTML & CSS", isDone: true},
       {id: v1(), title: "JS", isDone: false},
@@ -73,13 +73,13 @@ function App() {
   }
 
   // Хук2 следит за состоянием списка тасок после нажатия кнопок all-active-completed
-  let [filter, setFilter] = useState<FilterValuesType>("All")
+  let [filter, setFilter] = useState<filterValuesType>("All")
 
   // Функция передает значение по нажатию кнопок "all-active-completed" в ф-цию setFilter для хука2
   // function changeFilter(value: FilterValuesType) {
   //   setFilter(value);
   // }
-  function changeFilter(value: FilterValuesType, todoListId: string) {
+  function changeFilter(value: filterValuesType, todoListId: string) {
     let todo = todoList.find(tl => tl.id === todoListId)
     if (todo) {
       todo.filter = value
