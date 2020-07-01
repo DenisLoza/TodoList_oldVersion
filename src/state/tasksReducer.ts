@@ -1,7 +1,10 @@
-import {tasksStateType} from "../App";
-import {addTodoListActionType, removeTodoListActionType} from "./todolists-reducer";
+import {addTodoListActionType, removeTodoListActionType, todoListId1, todoListId2} from "./todolists-reducer";
+import {tasksType} from "../TodoList";
 import {v1} from "uuid";
 
+export type tasksStateType = {
+    [key: string]: Array<tasksType>
+}
 export type removeTaskActionType = {
     type: "REMOVE-TASK",
     taskId: string
@@ -29,7 +32,25 @@ export type actionsType = removeTaskActionType | addTaskActionType
     | addTodoListActionType | removeTodoListActionType
 
 
-export const tasksReducer = (state: tasksStateType, action: actionsType): tasksStateType => {
+const initialState: tasksStateType = {
+    [todoListId1]: [
+        {id: v1(), title: "HTML & CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: false},
+        {id: v1(), title: "React", isDone: true},
+        {id: v1(), title: "Redux", isDone: true},
+        {id: v1(), title: "Node JS", isDone: false},
+    ],
+    [todoListId2]: [
+        {id: v1(), title: "Milk", isDone: true},
+        {id: v1(), title: "Bread", isDone: false},
+        {id: v1(), title: "Beer", isDone: true},
+        {id: v1(), title: "Fish", isDone: true},
+        {id: v1(), title: "Chips", isDone: false},
+    ]
+}
+
+
+export const tasksReducer = (state: tasksStateType = initialState, action: actionsType): tasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
             // создаем поверхностную копию стейта
@@ -48,7 +69,7 @@ export const tasksReducer = (state: tasksStateType, action: actionsType): tasksS
             // создаем копию всех тасок из todoList, которую нам передал action, а именно "todoListId2"
             const tasks = stateCopy[action.todoListId]
             // создаем новую таску с именем "newName"
-            const newTask = {id: "6",  title: action.newTaskName, isDone: false}
+            const newTask = {id: v1(),  title: action.newTaskName, isDone: false}
             // создаем новый массив всех тасок, а в начало ставим новую таску
             const newTasks = [newTask, ...tasks]
             // в копию стейта кладем измененный список тасок на место "todoListId2"
@@ -60,14 +81,7 @@ export const tasksReducer = (state: tasksStateType, action: actionsType): tasksS
             const stateCopy = {...state}
             // создаем копию всех тасок из todoList, которую нам передал action, а именно "todoListId2"
             let tasks = stateCopy[action.todoListId]
-            // вернет таску с id="2"
-            let task = tasks.find(t => t.id === action.taskId)
-            // у таски с id="2" меняем св-во isDone на false
-            // заворачиваем в if из-за того что в реальной программе метод find может не вернуть значение,
-            // если не найдет таковое (формально обходим защиту TS от undefined)
-            if (task) {
-                task.isDone = action.newIsDone
-            }
+            stateCopy[action.todoListId] = tasks.map(t => t.id === action.taskId ? {...t, isDone: action.newIsDone} : t)
             return stateCopy
         }
         case "CHANGE-TASK-TITLE": {
@@ -99,7 +113,7 @@ export const tasksReducer = (state: tasksStateType, action: actionsType): tasksS
             return stateCopy
         }
         default:
-            throw new Error("I don't understand this action type!")
+            return state
     }
 }
 

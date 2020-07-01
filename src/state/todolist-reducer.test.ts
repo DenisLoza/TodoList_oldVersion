@@ -42,10 +42,10 @@ test("correct todoList should be added", () => {
     const endState = todoListsReducer(startState, addTodoListAC(newTodoListTitle))
     // проверочные значения: длинна полученного массива = 3 (добавится еще один объект)
     expect(endState.length).toBe(3)
-    // проверочные значения: третий объект в массиве получит название "New TodoList"
-    expect(endState[2].title).toBe(newTodoListTitle)
-    // проверочные значения: третий объект в массиве получит filter "All"
-    expect(endState[2].filter).toBe("All")
+    // проверочные значения: первый объект в массиве получит название "New TodoList"
+    expect(endState[0].title).toBe(newTodoListTitle)
+    // проверочные значения: первый объект в массиве получит filter "All"
+    expect(endState[0].filter).toBe("All")
 })
 
 // ТЕСТ. ИЗМЕНЕНИЕ НАИМЕНОВАНИЯ TODO ЛИСТА
@@ -60,16 +60,15 @@ test("correct todoList should change it's name", () => {
         {id: todoListId1, title: "What to learn", filter: "All"},
         {id: todoListId2, title: "What to buy", filter: "All"}
     ]
-    const action = changeTodoListTitleAC(newTodoListTitle, todoListId2)
+    const action = changeTodoListTitleAC(todoListId1, newTodoListTitle)
     // на выход передаем: начальный стэйт и id объекта, имя которого нужно будет изменить на newTodoListTitle
     const endState = todoListsReducer(startState, action)
-    // проверочные значения: первый объект массива будет иметь название "What to learn"
-    expect(endState[0].title).toBe("What to learn")
-    // проверочные значения: второй объект в массиве получит новое название "New TodoList"
-    expect(endState[1].title).toBe(newTodoListTitle)
+    // проверочные значения: первый объект в массиве получит новое название "New TodoList"
+    expect(endState[0].title).toBe(newTodoListTitle)
+    expect(endState[1].title).toBe("What to buy")
 })
 
-// ТЕСТ. ИЗМЕНЕНИЕ НАИМЕНОВАНИЯ TODO ЛИСТА
+// ТЕСТ. ИЗМЕНЕНИЕ ФИЛЬТРОВ (All | Active | Competed) TODO ЛИСТА
 test("correct filter of todoList should be change", () => {
     // генерируем персональный id для каждого объекта в массиве
     let todoListId1 = v1()
