@@ -1,6 +1,6 @@
 import {combineReducers, createStore} from "redux";
-import {todoListsReducer, todoListType} from "./todolists-reducer";
-import {tasksReducer, tasksStateType} from "./tasksReducer";
+import {todoListsReducer} from "./todolists-reducer";
+import {tasksReducer} from "./tasksReducer";
 
 // type appRootStateType = {
 //     todolists: Array<todoListType>

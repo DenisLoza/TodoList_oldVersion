@@ -6,7 +6,7 @@ type EditableSpanPropsType = {
     onChange: (newValue: string) => void
 }
 
-function EditableSpan(props: EditableSpanPropsType) {
+export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
     // Хук следит за состоянием режима редактирования span OR input
     let [editMode, setEditMode] = useState<boolean>(false)
     // Хук следит за состоянием значения нового\старого наименования таски
@@ -52,6 +52,6 @@ function EditableSpan(props: EditableSpanPropsType) {
             // При двойном клике на span активируется режим EditMode
             : <span onDoubleClick={activateEditMode}>{props.value}</span>
     )
-}
+})
 
-export default EditableSpan
+

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import './App.css'
-import {tasksType, TodoList} from './TodoList'
+import {taskType, TodoList} from './TodoList'
 
 import {AddItemForm} from "./AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {appRootStateType} from "./state/store";
 
 export type tasksStateType = {
-  [key: string]: Array<tasksType>
+  [key: string]: Array<taskType>
 }
 
 function AppWithRedux() {
@@ -30,45 +30,45 @@ function AppWithRedux() {
 
 
   // удаление тасок
-  function removeTask(id: string, todoListId: string) {
+  const removeTask = useCallback((id: string, todoListId: string) => {
     const action = removeTaskAC(id, todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
   // добавление новой таски
-  function addTask(title: string, todoListId: string) {
+  const addTask = useCallback((title: string, todoListId: string) => {
     const action = addTaskAC(title, todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
   // обработка чекбокса таски выполнено или не выполнено
-  function changeStatus(id: string, isDone: boolean, todoListId: string) {
+  const changeStatus = useCallback((id: string, isDone: boolean, todoListId: string) => {
     const action = changeTaskStatusAC(id, isDone, todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
   // изменение названия таски
-  function changeTitle(taskId: string, newTitle: string, todoListId: string) {
+  const changeTitle = useCallback((taskId: string, newTitle: string, todoListId: string) => {
     const action = changeTaskTitleAC(taskId, newTitle, todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
   // Удаление Туду-листа целиком
-  function removeTodoList(todoListId: string) {
+  const removeTodoList = useCallback((todoListId: string) => {
     const action = removeTodoListAC(todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
   // добавление нового Туду-листа
-  function addTodoList(title: string) {
+  const addTodoList = useCallback((title: string) => {
     const action = addTodoListAC(title)
     dispatch(action)
-  }
+  }, [dispatch])
   // изменение наименования Туду-листа
-  function changeTodoListTitle(id: string, newTitle: string) {
+  const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
     const action = changeTodoListTitleAC(id, newTitle)
     dispatch(action)
-  }
+  }, [dispatch])
   // изменение фильтров Туду-листа по категориям: All | Active | Completed
-  function changeFilter(value: filterValuesType, todoListId: string) {
+  const changeFilter = useCallback((value: filterValuesType, todoListId: string) => {
     const action = changeTodoListFilterAC(value, todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
 
   // Отрисовка списка тасок
   return (
@@ -89,16 +89,10 @@ function AppWithRedux() {
             <AddItemForm addItem={addTodoList}/>
           </Grid>
           <Grid container spacing={3}>
-            {todolists.map(tl => {
-              // Фильтр тасок по нажатию кнопок completed - active
-              let tasksForTodoList = tasks[tl.id]
-              if (tl.filter === "Completed") {
-                tasksForTodoList = tasksForTodoList.filter(t => t.isDone === true)
-              }
-              if (tl.filter === "Active") {
-                tasksForTodoList = tasksForTodoList.filter(t => t.isDone === false)
-              }
 
+            {todolists.map(tl => {
+              let allTasksForTodoList = tasks[tl.id]
+              let tasksForTodoList = allTasksForTodoList
               return (
                   <Grid item>
                     <Paper style={{padding: "10px"}}>

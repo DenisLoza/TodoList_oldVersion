@@ -1,9 +1,9 @@
 import {addTodoListActionType, removeTodoListActionType, todoListId1, todoListId2} from "./todolists-reducer";
-import {tasksType} from "../TodoList";
+import {taskType} from "../TodoList";
 import {v1} from "uuid";
 
 export type tasksStateType = {
-    [key: string]: Array<tasksType>
+    [key: string]: Array<taskType>
 }
 export type removeTaskActionType = {
     type: "REMOVE-TASK",
@@ -77,27 +77,26 @@ export const tasksReducer = (state: tasksStateType = initialState, action: actio
             return stateCopy
         }
         case "CHANGE-TASK-STATUS": {
-            // создаем поверхностную копию стейта
-            const stateCopy = {...state}
             // создаем копию всех тасок из todoList, которую нам передал action, а именно "todoListId2"
-            let tasks = stateCopy[action.todoListId]
-            stateCopy[action.todoListId] = tasks.map(t => t.id === action.taskId ? {...t, isDone: action.newIsDone} : t)
-            return stateCopy
+            let tasks = state[action.todoListId]
+            // таска, чье id будет совпадать с тем, что пришло из экшена поле isDone будет заменено на новое
+            // остальные таски остануться без изменений
+            state[action.todoListId] = tasks
+                .map(t => t.id === action.taskId
+                ? {...t, isDone: action.newIsDone}
+                : t)
+            return ({...state})
         }
         case "CHANGE-TASK-TITLE": {
-            // создаем поверхностную копию стейта
-            const stateCopy = {...state}
             // создаем копию всех тасок из todoList, которую нам передал action, а именно "todoListId2"
-            const tasks = stateCopy[action.todoListId]
-            // вернет таску с id="2"
-            let task = tasks.find(t => t.id === action.taskId)
-            // у таски с id="2" меняем св-во title на "newTitle"
-            // заворачиваем в if из-за того что в реальной программе метод find может не вернуть значение,
-            // если не найдет таковое (формально обходим защиту TS от undefined)
-            if (task) {
-                task.title = action.newTitle
-            }
-            return stateCopy
+            const tasks = state[action.todoListId]
+            // таска, чье id будет совпадать с тем, что пришло из экшена поле title будет заменено на новое
+            // остальные таски остануться без изменений
+            state[action.todoListId] = tasks
+                .map(t => t.id === action.taskId
+                    ? {...t, title: action.newTitle}
+                    : t)
+            return ({...state})
         }
         case "ADD-TODOLIST": {
             // создаем поверхностную копию стейта

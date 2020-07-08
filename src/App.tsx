@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './App.css'
-import {tasksType, TodoList} from './TodoList'
+import {taskType, TodoList} from './TodoList'
 // Библиотека для генерации уникальных id
 import {v1} from 'uuid'
 import {AddItemForm} from "./AddItemForm"
@@ -15,7 +15,7 @@ export type todoListType ={
   filter: filterValuesType
 }
 export type tasksStateType = {
-  [key: string]: Array<tasksType>
+  [key: string]: Array<taskType>
 }
 
 
@@ -27,8 +27,8 @@ function App() {
 
   // Состояние всех туду листов. Хук useState
   let [todoList, setTodoList] = useState<Array<todoListType>>([
-    {id: todoListId1, title: "Whats to learn #1", filter: "All"},
-    {id: todoListId2, title: "Whats to learn #2", filter: "All"}
+    {id: todoListId1, title: "Whats to learn:", filter: "All"},
+    {id: todoListId2, title: "Whats to buy:", filter: "All"}
   ])
 
   // ОТДЕЛЬНЫЙ todo List
