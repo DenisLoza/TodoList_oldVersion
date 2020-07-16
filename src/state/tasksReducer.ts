@@ -33,20 +33,20 @@ export type actionsType = removeTaskActionType | addTaskActionType
 
 
 const initialState: tasksStateType = {
-    [todoListId1]: [
-        {id: v1(), title: "HTML & CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: false},
-        {id: v1(), title: "React", isDone: true},
-        {id: v1(), title: "Redux", isDone: true},
-        {id: v1(), title: "Node JS", isDone: false},
-    ],
-    [todoListId2]: [
-        {id: v1(), title: "Milk", isDone: true},
-        {id: v1(), title: "Bread", isDone: false},
-        {id: v1(), title: "Beer", isDone: true},
-        {id: v1(), title: "Fish", isDone: true},
-        {id: v1(), title: "Chips", isDone: false},
-    ]
+    // [todoListId1]: [
+    //     {id: v1(), title: "HTML & CSS", isDone: true},
+    //     {id: v1(), title: "JS", isDone: false},
+    //     {id: v1(), title: "React", isDone: true},
+    //     {id: v1(), title: "Redux", isDone: true},
+    //     {id: v1(), title: "Node JS", isDone: false},
+    // ],
+    // [todoListId2]: [
+    //     {id: v1(), title: "Milk", isDone: true},
+    //     {id: v1(), title: "Bread", isDone: false},
+    //     {id: v1(), title: "Beer", isDone: true},
+    //     {id: v1(), title: "Fish", isDone: true},
+    //     {id: v1(), title: "Chips", isDone: false},
+    // ]
 }
 
 

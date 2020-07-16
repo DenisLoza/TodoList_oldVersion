@@ -24,10 +24,9 @@ function AppWithRedux() {
 
   // передаем dispatch в редьюсеры с помощью react-redux
   const dispatch = useDispatch()
-  // из глобального стейта достаем нужные объекты
+  // из глобального стейта достаем нужные объекты, т.к. используем общий редьюсер ф-цию (combineReducers)
   const todolists = useSelector<appRootStateType, Array<todoListType>>(state => state.todolists)
   const tasks = useSelector<appRootStateType, tasksStateType>(state => state.tasks)
-
 
   // удаление тасок
   const removeTask = useCallback((id: string, todoListId: string) => {

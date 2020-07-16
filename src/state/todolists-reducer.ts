@@ -38,12 +38,11 @@ export type actionsType =
     | changeTodoListFilterActionType
 
 
-
 export let todoListId1 = v1()
 export let todoListId2 = v1()
 const initialState: Array<todoListType> = [
-    {id: todoListId1, title: "Whats to learn:", filter: "All"},
-    {id: todoListId2, title: "Whats to buy:", filter: "All"}
+    // {id: todoListId1, title: "Whats to learn:", filter: "All"},
+    // {id: todoListId2, title: "Whats to buy:", filter: "All"}
 ]
 
 
