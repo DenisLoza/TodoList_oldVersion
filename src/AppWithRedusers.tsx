@@ -1,8 +1,8 @@
-import React, {useReducer} from 'react'
-import './App.css'
-import {TodoList} from './TodoList'
+import React, {useReducer} from "react"
+import "./App.css"
+import {TodoList} from "./TodoList"
 // Библиотека для генерации уникальных id
-import {v1} from 'uuid'
+import {v1} from "uuid"
 import {AddItemForm} from "./AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
@@ -12,8 +12,9 @@ import {
   changeTodoListTitleAC, filterValuesType,
   removeTodoListAC,
   todoListsReducer
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasksReducer";
+} from "./state/todolists-reducer"
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasksReducer"
+import {taskPrioritiesEnum, taskStatusesEnum} from "./api/todolists-api"
 
 
 function AppWithRedusers() {
@@ -24,25 +25,51 @@ function AppWithRedusers() {
 
   // Стартовый стейт туду-листов
   let [todoList, dispatchTodoListReduser] = useReducer(todoListsReducer, [
-    {id: todoListId1, title: "Whats to learn #1", filter: "All"},
-    {id: todoListId2, title: "Whats to learn #2", filter: "All"}
+    {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
+    {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
   ])
 
   // Стартовый стейт тасок
   let [tasks, dispatchTasksReduser] = useReducer(tasksReducer, {
     [todoListId1]: [
-      {id: v1(), title: "HTML & CSS", isDone: true},
-      {id: v1(), title: "JS", isDone: false},
-      {id: v1(), title: "React", isDone: true},
-      {id: v1(), title: "Redux", isDone: true},
-      {id: v1(), title: "Node JS", isDone: false},
+      {
+        id: v1(), todoListId: todoListId1, title: "HTML & CSS",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
+      {
+        id: v1(), todoListId: todoListId1, title: "JavaScript",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
+      {
+        id: v1(), todoListId: todoListId1, title: "React & Redux",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
     ],
     [todoListId2]: [
-      {id: v1(), title: "Milk", isDone: true},
-      {id: v1(), title: "Bread", isDone: false},
-      {id: v1(), title: "Beer", isDone: true},
-      {id: v1(), title: "Fish", isDone: true},
-      {id: v1(), title: "Chips", isDone: false},
+      {
+        id: v1(), todoListId: todoListId2, title: "Milk",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
+      {
+        id: v1(), todoListId: todoListId2, title: "Bread",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
+      {
+        id: v1(), todoListId: todoListId2, title: "Butter",
+        status: taskStatusesEnum.InProgress, startDate: "", deadline: "",
+        addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+        description: ""
+      },
     ]
   })
 
@@ -58,8 +85,8 @@ function AppWithRedusers() {
   }
 
   // обработка чекбокса таски выполнено или не выполнено
-  function changeStatus(id: string, isDone: boolean, todoListId: string) {
-    const action = changeTaskStatusAC(id, isDone, todoListId)
+  function changeStatus(id: string, status: taskStatusesEnum, todoListId: string) {
+    const action = changeTaskStatusAC(id, status, todoListId)
     dispatchTasksReduser(action)
   }
   // изменение названия таски
@@ -147,10 +174,10 @@ function AppWithRedusers() {
               // Фильтр тасок по нажатию кнопок completed - active
               let tasksForTodoList = tasks[tl.id]
               if (tl.filter === "Completed") {
-                tasksForTodoList = tasksForTodoList.filter(t => t.isDone === true)
+                tasksForTodoList = tasksForTodoList.filter(t => t.status === taskStatusesEnum.Completed)
               }
               if (tl.filter === "Active") {
-                tasksForTodoList = tasksForTodoList.filter(t => t.isDone === false)
+                tasksForTodoList = tasksForTodoList.filter(t => t.status === taskStatusesEnum.New)
               }
 
               return (

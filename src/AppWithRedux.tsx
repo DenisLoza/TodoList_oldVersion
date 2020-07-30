@@ -1,7 +1,6 @@
-import React, {useCallback} from 'react'
-import './App.css'
-import {taskType, TodoList} from './TodoList'
-
+import React, {useCallback} from "react"
+import "./App.css"
+import {TodoList} from "./TodoList"
 import {AddItemForm} from "./AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
@@ -9,23 +8,20 @@ import {
   addTodoListAC,
   changeTodoListFilterAC,
   changeTodoListTitleAC, filterValuesType,
-  removeTodoListAC,
-  todoListType
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasksReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {appRootStateType} from "./state/store";
+  removeTodoListAC, todoListDomainType,
+} from "./state/todolists-reducer"
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksStateType} from "./state/tasksReducer"
+import {useDispatch, useSelector} from "react-redux"
+import {appRootStateType} from "./state/store"
+import {taskStatusesEnum} from "./api/todolists-api"
 
-export type tasksStateType = {
-  [key: string]: Array<taskType>
-}
 
 function AppWithRedux() {
 
   // передаем dispatch в редьюсеры с помощью react-redux
   const dispatch = useDispatch()
   // из глобального стейта достаем нужные объекты, т.к. используем общий редьюсер ф-цию (combineReducers)
-  const todolists = useSelector<appRootStateType, Array<todoListType>>(state => state.todolists)
+  const todolists = useSelector<appRootStateType, Array<todoListDomainType>>(state => state.todolists)
   const tasks = useSelector<appRootStateType, tasksStateType>(state => state.tasks)
 
   // удаление тасок
@@ -39,8 +35,8 @@ function AppWithRedux() {
     dispatch(action)
   }, [dispatch])
   // обработка чекбокса таски выполнено или не выполнено
-  const changeStatus = useCallback((id: string, isDone: boolean, todoListId: string) => {
-    const action = changeTaskStatusAC(id, isDone, todoListId)
+  const changeStatus = useCallback((id: string, status: taskStatusesEnum, todoListId: string) => {
+    const action = changeTaskStatusAC(id, status, todoListId)
     dispatch(action)
   }, [dispatch])
   // изменение названия таски

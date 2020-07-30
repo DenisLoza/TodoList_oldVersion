@@ -1,16 +1,13 @@
-import {v1} from "uuid";
+import {v1} from "uuid"
+import {todolistType} from "../api/todolists-api"
 
-export type filterValuesType = "All" | "Completed" | "Active"
-export type todoListType ={
+
+export type todoListType = {
     id: string
     title: string
     filter: filterValuesType
 }
-// type ActionType = {
-//     type: string // Тип для Action обязателен!!!
-//     // у ActionType может быть любое дополнительное св-во типа string
-//     [key: string]: any
-// }
+
 export type removeTodoListActionType = {
     type: "REMOVE-TODOLIST",
     id: string
@@ -37,22 +34,34 @@ export type actionsType =
     | changeTodoListTitleActionType
     | changeTodoListFilterActionType
 
+export type filterValuesType = "All" | "Completed" | "Active"
+// в типизацию из API добавляем локальную типизацию TodoList
+export type todoListDomainType = todolistType & {
+    filter: filterValuesType
+}
+
 
 export let todoListId1 = v1()
 export let todoListId2 = v1()
-const initialState: Array<todoListType> = [
+const initialState: Array<todoListDomainType> = [
     // {id: todoListId1, title: "Whats to learn:", filter: "All"},
     // {id: todoListId2, title: "Whats to buy:", filter: "All"}
 ]
 
 
-export const todoListsReducer = (state: Array<todoListType> = initialState, action: actionsType): Array<todoListType> => {
+export const todoListsReducer = (state: Array<todoListDomainType> = initialState, action: actionsType): Array<todoListDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST": {
             return state.filter(tl => tl.id !== action.id)
         }
         case "ADD-TODOLIST": {
-            return [{id: action.todoListId, title: action.title, filter: "All"}, ...state, ]
+            return [{
+                id: action.todoListId,
+                title: action.title,
+                filter: "All",
+                addedDate: "",
+                order: 0
+            }, ...state]
         }
         case "CHANGE-TODOLIST-TITLE":
             const todoList = state.find(tl => tl.id === action.id)

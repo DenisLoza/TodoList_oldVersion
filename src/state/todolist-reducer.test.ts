@@ -2,11 +2,11 @@ import {v1} from "uuid";
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
-    removeTodoListAC,
-    todoListsReducer
-} from "./todolists-reducer";
-import {filterValuesType, todoListType} from "../App";
+    changeTodoListTitleAC, filterValuesType,
+    removeTodoListAC, todoListDomainType,
+    todoListsReducer,
+} from "./todolists-reducer"
+
 
 // ТЕСТ. УДАЛЕНИЕ TODO ЛИСТА
 test("correct todoList should be removed", () => {
@@ -14,9 +14,9 @@ test("correct todoList should be removed", () => {
     let todoListId1 = v1()
     let todoListId2 = v1()
     // Начальные значения: два объекта в массиве
-    const startState: Array<todoListType> = [
-        {id: todoListId1, title: "What to learn", filter: "All"},
-        {id: todoListId2, title: "What to buy", filter: "All"}
+    const startState: Array<todoListDomainType> = [
+        {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
+        {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
     ]
     // на выход передаем: начальный стэйт и id объекта, который нужно будет удалить
     const endState = todoListsReducer(startState, removeTodoListAC(todoListId1))
@@ -34,9 +34,9 @@ test("correct todoList should be added", () => {
 
     let newTodoListTitle = "New TodoList"
     // Начальные значения: два объекта в массиве
-    const startState: Array<todoListType> = [
-        {id: todoListId1, title: "What to learn", filter: "All"},
-        {id: todoListId2, title: "What to buy", filter: "All"}
+    const startState: Array<todoListDomainType> = [
+        {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
+        {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
     ]
     // на выход передаем: начальный стэйт и id объекта, который нужно будет добавить
     const endState = todoListsReducer(startState, addTodoListAC(newTodoListTitle))
@@ -56,16 +56,16 @@ test("correct todoList should change it's name", () => {
 
     let newTodoListTitle = "New TodoList"
     // Начальные значения: два объекта в массиве
-    const startState: Array<todoListType> = [
-        {id: todoListId1, title: "What to learn", filter: "All"},
-        {id: todoListId2, title: "What to buy", filter: "All"}
+    const startState: Array<todoListDomainType> = [
+        {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
+        {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
     ]
     const action = changeTodoListTitleAC(todoListId1, newTodoListTitle)
     // на выход передаем: начальный стэйт и id объекта, имя которого нужно будет изменить на newTodoListTitle
     const endState = todoListsReducer(startState, action)
     // проверочные значения: первый объект в массиве получит новое название "New TodoList"
     expect(endState[0].title).toBe(newTodoListTitle)
-    expect(endState[1].title).toBe("What to buy")
+    expect(endState[1].title).toBe("Whats to buy:")
 })
 
 // ТЕСТ. ИЗМЕНЕНИЕ ФИЛЬТРОВ (All | Active | Competed) TODO ЛИСТА
@@ -76,9 +76,9 @@ test("correct filter of todoList should be change", () => {
 
     let newFilter: filterValuesType = "Completed"
     // Начальные значения: два объекта в массиве
-    const startState: Array<todoListType> = [
-        {id: todoListId1, title: "What to learn", filter: "All"},
-        {id: todoListId2, title: "What to buy", filter: "All"}
+    const startState: Array<todoListDomainType> = [
+        {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
+        {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
     ]
     const action = changeTodoListFilterAC(newFilter, todoListId2)
     // на выход передаем: начальный стэйт и id объекта, фильтр которого нужно будет изменить на newFilter

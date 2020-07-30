@@ -1,23 +1,54 @@
-import {tasksStateType} from "../App";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasksReducer";
-import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
+import {tasksStateType} from "../App"
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasksReducer"
+import {addTodoListAC, removeTodoListAC} from "./todolists-reducer"
+import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
 
 
 test ("correct task should be deleted from correct array", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: true},
-            {id: "2", title: "Bread", isDone: false},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
 // ActionCreator
@@ -42,18 +73,48 @@ test ("correct task should be deleted from correct array", () => {
 test ("correct task should be added from correct array", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: false},
-            {id: "2", title: "Bread", isDone: false},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
 // ActionCreator
@@ -71,55 +132,115 @@ test ("correct task should be added from correct array", () => {
     expect(endState["todoListId2"][0].id).toBeDefined()
     // первый элемент "todoListId2" с ключом title БУДЕТ "newName"
     expect(endState["todoListId2"][0].title).toBe("newName")
-    // первый элемент "todoListId2" с ключом isDone БУДЕТ false, как изначально.
-    expect(endState["todoListId2"][0].isDone).toBeFalsy()
+    // первый элемент "todoListId2" со статусом БУДЕТ 0(новая), как изначально.
+    expect(endState["todoListId2"][0].status).toBe(taskStatusesEnum.New)
 })
 
 test ("status of specified task should be changed", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: false},
-            {id: "2", title: "JS", isDone: true},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: false},
-            {id: "2", title: "Bread", isDone: true},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
 // ActionCreator
-    // что сделать: изменить статус task id="2" c true на false
-    const action = changeTaskStatusAC ("2", false, "todoListId2")
+    // что сделать: изменить статус task id="2" c Completed на New
+    const action = changeTaskStatusAC ("2", taskStatusesEnum.New, "todoListId2")
     // отправь стартовые данные из startState и отправь action в файл-редьюсер tasksReducer
     const endState = tasksReducer(startState, action)
 
 // Получаем выходные данные из редьюсера и проверяем их
     // второй элемент "todoListId2" с ключом isDone БУДЕТ false.
-    expect(endState["todoListId2"][1].isDone).toBeFalsy()
+    expect(endState["todoListId2"][1].status).toBe(taskStatusesEnum.New)
     // второй элемент "todoListId1" с ключом isDone БУДЕТ true, как заданно изначально.
-    expect(endState["todoListId1"][1].isDone).toBeTruthy()
+    expect(endState["todoListId1"][1].status).toBe(taskStatusesEnum.Completed)
 })
 
 test ("title of specified task should be changed", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: false},
-            {id: "2", title: "Bread", isDone: false},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
 // ActionCreator
@@ -138,18 +259,48 @@ test ("title of specified task should be changed", () => {
 test ("new property with new array should be added when new todoList is added", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: false},
-            {id: "2", title: "Bread", isDone: false},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
 // ActionCreator
@@ -176,18 +327,48 @@ test ("new property with new array should be added when new todoList is added", 
 test ("property with todolistId should be deleted", () => {
     const startState: tasksStateType = {
         "todoListId1": [
-            {id: "1", title: "HTML & CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "React", isDone: true},
-            {id: "4", title: "Redux", isDone: true},
-            {id: "5", title: "Node JS", isDone: false},
+            {id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "React", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Redux", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Node JS", todoListId: "todoListId1",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ],
         "todoListId2": [
-            {id: "1", title: "Milk", isDone: false},
-            {id: "2", title: "Bread", isDone: false},
-            {id: "3", title: "Beer", isDone: true},
-            {id: "4", title: "Fish", isDone: true},
-            {id: "5", title: "Chips", isDone: false},
+            {id: "1", title: "Milk", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "2", title: "Bread", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "3", title: "Beer", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "4", title: "Fish", todoListId: "todoListId2",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
+            {id: "5", title: "Chips", todoListId: "todoListId2",
+                status: taskStatusesEnum.New, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""},
         ]
     }
     // ActionCreator

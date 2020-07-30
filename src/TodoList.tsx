@@ -1,19 +1,20 @@
-import React, {useCallback} from 'react';
-import './TodoList.css';
-import {filterValuesType} from './App';
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
-import {Button, IconButton} from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-import {Task} from "./Task";
+import React, {useCallback} from "react"
+import "./TodoList.css"
+import {AddItemForm} from "./AddItemForm"
+import {EditableSpan} from "./EditableSpan"
+import {Button, IconButton} from "@material-ui/core"
+import DeleteIcon from "@material-ui/icons/Delete"
+import {Task} from "./Task"
+import {filterValuesType} from "./state/todolists-reducer"
+import {taskStatusesEnum, taskType} from "./api/todolists-api"
 
 
 // Типизируем список тасок (id, название, состояние checked)
-export type taskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+// export type taskType = {
+//     id: string
+//     title: string
+//     status: taskStatusesEnum
+// }
 // Типизируем данные для всего Списка дел
 type todoListType = {
     id: string
@@ -24,7 +25,7 @@ type todoListType = {
     removeTask: (id: string, todoList: string) => void
     changeFilter: (value: filterValuesType, todoListId: string) => void
     addTask: (NewTaskTitle: string, todoList: string) => void
-    changeTaskStatus: (id: string, isDone: boolean, todoList: string) => void
+    changeTaskStatus: (id: string, status: taskStatusesEnum, todoList: string) => void
     removeTodoList: (todoListId: string) => void
     changeTitle: (taskId: string, newTitle: string, todoListId: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
@@ -66,12 +67,12 @@ export const TodoList = React.memo ((props: todoListType) => {
     // Фильтр тасок по нажатию кнопок "All" - "Completed" - "Active"
     if (props.filter === "Completed") {
         // console.log("call Completed")
-        tasks = props.tasks.filter(t => t.isDone === true)
+        tasks = props.tasks.filter(t => t.status === taskStatusesEnum.Completed)
         // console.log(tasksForTodoList)
     }
     if (props.filter === "Active") {
         // console.log("call Active")
-        tasks = props.tasks.filter(t => t.isDone === false)
+        tasks = props.tasks.filter(t => t.status === taskStatusesEnum.New)
     }
     // console.log(tasks)
 
