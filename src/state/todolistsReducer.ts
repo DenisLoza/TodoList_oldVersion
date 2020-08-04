@@ -15,8 +15,7 @@ export type removeTodoListActionType = {
 }
 export type addTodoListActionType = {
     type: "ADD-TODOLIST",
-    title: string
-    todoListId: string
+    todoList: todolistType
 }
 export type changeTodoListTitleActionType = {
     type: "CHANGE-TODOLIST-TITLE",
@@ -61,13 +60,8 @@ export const todolistsReducer = (state: Array<todoListDomainType> = initialState
             return state.filter(tl => tl.id !== action.id)
         }
         case "ADD-TODOLIST": {
-            return [{
-                id: action.todoListId,
-                title: action.title,
-                filter: "All",
-                addedDate: "",
-                order: 0
-            }, ...state]
+            const newTodoList: todoListDomainType = {...action.todoList, filter: "All"}
+            return [newTodoList, ...state]
         }
         case "CHANGE-TODOLIST-TITLE": {
             const todoList = state.find(tl => tl.id === action.id)
@@ -98,8 +92,8 @@ export const todolistsReducer = (state: Array<todoListDomainType> = initialState
 export const removeTodoListAC = (todoListId1: string): removeTodoListActionType => {
     return {type: "REMOVE-TODOLIST", id: todoListId1}
 }
-export const addTodoListAC = (newTodoListTitle: string): addTodoListActionType => {
-    return {type: "ADD-TODOLIST", title: newTodoListTitle, todoListId: v1()}
+export const addTodoListAC = (todoList: todolistType): addTodoListActionType => {
+    return {type: "ADD-TODOLIST", todoList: todoList}
 }
 export const changeTodoListTitleAC = (todoListId2: string, newTodoListTitle: string): changeTodoListTitleActionType => {
     return {type: "CHANGE-TODOLIST-TITLE", id: todoListId2, title: newTodoListTitle}
@@ -112,11 +106,39 @@ export const setTodoListsAC = (todolists: Array<todolistType>): setTodoListsActi
 }
 
 // THUNK CREATOR ф-ции (возвращают Thunk)
+// запрос списка туду листов на сервере
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch) => {
         todolistsAPI.getTodolists()
             .then((res) => {
                 dispatch(setTodoListsAC(res.data))
+            })
+    }
+}
+// удаление туду листа на сервере
+export const removeTodolistTC = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.deleteTodolist(todolistId)
+            .then((res) => {
+                dispatch(removeTodoListAC(todolistId))
+            })
+    }
+}
+// удаление туду листа на сервере
+export const addTodolistTC = (title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.createTodolist(title)
+            .then((res) => {
+                dispatch(addTodoListAC(res.data.data.item))
+            })
+    }
+}
+// переименование туду листа на сервере
+export const changeTodolistTC = (id: string, title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.updateTodolistTitle(id, title)
+            .then((res) => {
+                dispatch(changeTodoListTitleAC(id, title))
             })
     }
 }

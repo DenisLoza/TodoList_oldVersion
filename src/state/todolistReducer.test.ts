@@ -6,6 +6,7 @@ import {
     removeTodoListAC, setTodoListsAC, todoListDomainType,
     todolistsReducer,
 } from "./todolistsReducer"
+import {todolistType} from "../api/todolists-api"
 
 let todoListId1: string
 let todoListId2: string
@@ -37,14 +38,18 @@ test("correct todoList should be removed", () => {
 // ТЕСТ. ДОБАВЛЕНИЕ TODO ЛИСТА
 test("correct todoList should be added", () => {
 
-    let newTodoListTitle = "New TodoList"
-
+    let todolist: todolistType = {
+        title: "New TodoList",
+        id: "id",
+        order: 0,
+        addedDate: ""
+    }
     // на выход передаем: начальный стэйт и id объекта, который нужно будет добавить
-    const endState = todolistsReducer(startState, addTodoListAC(newTodoListTitle))
+    const endState = todolistsReducer(startState, addTodoListAC(todolist))
     // проверочные значения: длинна полученного массива = 3 (добавится еще один объект)
     expect(endState.length).toBe(3)
     // проверочные значения: первый объект в массиве получит название "New TodoList"
-    expect(endState[0].title).toBe(newTodoListTitle)
+    expect(endState[0].title).toBe(todolist.title)
     // проверочные значения: первый объект в массиве получит filter "All"
     expect(endState[0].filter).toBe("All")
 })
@@ -52,13 +57,18 @@ test("correct todoList should be added", () => {
 // ТЕСТ. ИЗМЕНЕНИЕ НАИМЕНОВАНИЯ TODO ЛИСТА
 test("correct todoList should change it's name", () => {
 
-    let newTodoListTitle = "New TodoList"
+    let todolist: todolistType = {
+        title: "New TodoList",
+        id: "id",
+        order: 0,
+        addedDate: ""
+    }
 
-    const action = changeTodoListTitleAC(todoListId1, newTodoListTitle)
+    const action = changeTodoListTitleAC(todoListId1, todolist.title)
     // на выход передаем: начальный стэйт и id объекта, имя которого нужно будет изменить на newTodoListTitle
     const endState = todolistsReducer(startState, action)
     // проверочные значения: первый объект в массиве получит новое название "New TodoList"
-    expect(endState[0].title).toBe(newTodoListTitle)
+    expect(endState[0].title).toBe(todolist.title)
     expect(endState[1].title).toBe("Whats to buy:")
 })
 

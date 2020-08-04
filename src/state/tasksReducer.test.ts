@@ -1,8 +1,7 @@
 import {tasksStateType} from "../App"
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC, tasksReducer} from "./tasksReducer"
+import {addTaskAC, updateTaskAC, removeTaskAC, setTasksAC, tasksReducer} from "./tasksReducer"
 import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolistsReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
-
 
 
 test ("correct task should be deleted from correct array", () => {
@@ -120,7 +119,19 @@ test ("correct task should be added from correct array", () => {
     }
 // ActionCreator
     // что сделать: добавить task с именем="newName" в начало "todoListId2"
-    const action = addTaskAC ("newName", "todoListId2")
+    // const action = addTaskAC ("newName", "todoListId2")
+    const action = addTaskAC({
+        todoListId: "todoListId2",
+        title: "newName",
+        status: taskStatusesEnum.New,
+        addedDate: "",
+        deadline: "",
+        description: "",
+        order: 0,
+        priority: 0,
+        startDate: "",
+        id: "id exist"
+    })
     // отправь стартовые данные из startState и отправь action в файл-редьюсер tasksReducer
     const endState = tasksReducer(startState, action)
 
@@ -186,7 +197,7 @@ test ("status of specified task should be changed", () => {
     }
 // ActionCreator
     // что сделать: изменить статус task id="2" c Completed на New
-    const action = changeTaskStatusAC ("2", taskStatusesEnum.New, "todoListId2")
+    const action = updateTaskAC ("2", {status: taskStatusesEnum.New}, "todoListId2")
     // отправь стартовые данные из startState и отправь action в файл-редьюсер tasksReducer
     const endState = tasksReducer(startState, action)
 
@@ -246,7 +257,7 @@ test ("title of specified task should be changed", () => {
     }
 // ActionCreator
     // что сделать: изменить имя task на имя="newName" в "todoListId2"
-    const action = changeTaskTitleAC("2", "newName", "todoListId2")
+    const action = updateTaskAC("2", {title: "newName"}, "todoListId2")
     // отправь стартовые данные из startState и отправь action в файл-редьюсер tasksReducer
     const endState = tasksReducer(startState, action)
 
@@ -306,7 +317,12 @@ test ("new property with new array should be added when new todoList is added", 
     }
 // ActionCreator
     // что сделать: изменить имя туду-листа на имя="newTodoList"
-    const action = addTodoListAC("newTodoList")
+    const action = addTodoListAC({
+        title: "newTodoList",
+        id: "id",
+        order: 0,
+        addedDate: ""
+    })
     // отправь стартовые данные из startState и отправь action в файл-редьюсер tasksReducer
     const endState = tasksReducer(startState, action)
     // в переменную keys запишем массив из всех ключей полученного массива объектов todoList с новым

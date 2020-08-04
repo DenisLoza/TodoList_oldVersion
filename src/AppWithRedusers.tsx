@@ -13,7 +13,7 @@ import {
   removeTodoListAC,
   todolistsReducer
 } from "./state/todolistsReducer"
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasksReducer"
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "./state/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "./api/todolists-api"
 
 
@@ -80,24 +80,30 @@ function AppWithRedusers() {
   }
   // добавление новой таски
   function addTask(title: string, todoListId: string) {
-    const action = addTaskAC(title, todoListId)
+    const action = addTaskAC({
+      todoListId: todoListId,
+      title: title,
+      status: taskStatusesEnum.New,
+      addedDate: "",
+      deadline: "",
+      description: "",
+      order: 0,
+      priority: 0,
+      startDate: "",
+      id: "id exist"
+    })
     dispatchTasksReduser(action)
   }
 
   // обработка чекбокса таски выполнено или не выполнено
   function changeStatus(id: string, status: taskStatusesEnum, todoListId: string) {
-    const action = changeTaskStatusAC(id, status, todoListId)
+    const action = updateTaskAC(id, {status: status}, todoListId)
     dispatchTasksReduser(action)
   }
   // изменение названия таски
   function changeTitle(taskId: string, newTitle: string, todoListId: string) {
-    const action = changeTaskTitleAC(taskId, newTitle, todoListId)
+    const action = updateTaskAC(taskId, {title: newTitle}, todoListId)
     dispatchTasksReduser(action)
-    // let task = tasks[todoListId].find(t => t.id === taskId)
-    // if (task) {
-    //   task.title = newTitle
-    //   setTasks({...tasks})
-    // }
   }
 
   // Удаление Туду-листа целиком
@@ -105,40 +111,24 @@ function AppWithRedusers() {
     const action = removeTodoListAC(todoListId)
     dispatchTodoListReduser(action)
     dispatchTasksReduser(action)
-    // let newTodoList = todoList.filter(tl => tl.id !== todoListId)
-    // setTodoList(newTodoList)
-    // // Удаляем все таски в удаленном туду листе
-    // delete tasks[todoListId]
-    // setTasks({...tasks})
   }
 
   // добавление нового Туду-листа
   function addTodoList(title: string) {
-    const action = addTodoListAC(title)
+    const action = addTodoListAC({
+      id: v1(),
+      addedDate: "",
+      order: 0,
+      title: title
+    })
     dispatchTodoListReduser(action)
     dispatchTasksReduser(action)
-    // const newTodoListId: string = v1()
-    // const newTodoList: todoListType = {
-    //   id: newTodoListId,
-    //   title: title,
-    //   filter: "All"
-    // }
-    // setTodoList([newTodoList, ...todoList])
-    // setTasks({
-    //   ...tasks,
-    //   [newTodoListId]: []
-    // })
   }
 
   // изменение наименования Туду-листа
   function changeTodoListTitle(id: string, newTitle: string) {
     const action = changeTodoListTitleAC(id, newTitle)
     dispatchTodoListReduser(action)
-    // const newTodoList = todoList.find(tl => tl.id === id)
-    // if (newTodoList) {
-    //   newTodoList.title = newTitle
-    //   setTodoList([...todoList])
-    // }
   }
 
   // изменение фильтров Туду-листа по категориям: All | Active | Completed

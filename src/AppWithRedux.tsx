@@ -7,10 +7,15 @@ import {TodoList} from "./TodoList"
 import {AddItemForm} from "./AddItemForm"
 import {appRootStateType} from "./state/store"
 import {
-  addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC,
-  filterValuesType, todoListDomainType, fetchTodolistsTC
+  changeTodoListFilterAC,
+  filterValuesType, todoListDomainType, fetchTodolistsTC, removeTodolistTC, addTodolistTC, changeTodolistTC
 } from "./state/todolistsReducer"
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksStateType} from "./state/tasksReducer"
+import {
+  addTaskTC,
+  changeTaskTitleAC,
+  removeTaskTC,
+  tasksStateType, updateTaskTC
+} from "./state/tasksReducer"
 import {taskStatusesEnum} from "./api/todolists-api"
 
 
@@ -22,46 +27,53 @@ function AppWithRedux() {
   const todolists = useSelector<appRootStateType, Array<todoListDomainType>>(state => state.todolists)
   const tasks = useSelector<appRootStateType, tasksStateType>(state => state.tasks)
 
-  // добавление туду листов от сервера
+  // добавление списка туду листов из сервера
   useEffect(() => {
     dispatch(fetchTodolistsTC())
   },[])
 
-  // удаление тасок
+  // удаление тасок в BLL и на сервере
   const removeTask = useCallback((id: string, todoListId: string) => {
-    const action = removeTaskAC(id, todoListId)
-    dispatch(action)
+    const thunk = removeTaskTC(id, todoListId)
+    dispatch(thunk)
   }, [dispatch])
-  // добавление новой таски
+
+  // добавление новой таски в BLL и на сервере
   const addTask = useCallback((title: string, todoListId: string) => {
-    const action = addTaskAC(title, todoListId)
-    dispatch(action)
+    const thunk = addTaskTC(title, todoListId)
+    dispatch(thunk)
   }, [dispatch])
-  // обработка чекбокса таски выполнено или не выполнено
+
+  // обработка чекбокса таски выполнено или не выполнено в BLL и на сервере
   const changeStatus = useCallback((id: string, status: taskStatusesEnum, todoListId: string) => {
-    const action = changeTaskStatusAC(id, status, todoListId)
-    dispatch(action)
+    const thunk = updateTaskTC(id, {status: status}, todoListId)
+    dispatch(thunk)
   }, [dispatch])
-  // изменение названия таски
+
+  // изменение названия таски в BLL и на сервере
   const changeTitle = useCallback((taskId: string, newTitle: string, todoListId: string) => {
-    const action = changeTaskTitleAC(taskId, newTitle, todoListId)
-    dispatch(action)
+    const thunk = updateTaskTC(taskId, {title: newTitle}, todoListId)
+    dispatch(thunk)
   }, [dispatch])
-  // Удаление Туду-листа целиком
+
+  // Удаление Туду-листа целиком в BLL и на сервере
   const removeTodoList = useCallback((todoListId: string) => {
-    const action = removeTodoListAC(todoListId)
-    dispatch(action)
+    const thunk = removeTodolistTC(todoListId)
+    dispatch(thunk)
   }, [dispatch])
-  // добавление нового Туду-листа
+
+  // добавление нового Туду-листа в BLL и на сервере
   const addTodoList = useCallback((title: string) => {
-    const action = addTodoListAC(title)
-    dispatch(action)
+    const thunk = addTodolistTC(title)
+    dispatch(thunk)
   }, [dispatch])
-  // изменение наименования Туду-листа
+
+  // изменение наименования Туду-листа в BLL и на сервере
   const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
-    const action = changeTodoListTitleAC(id, newTitle)
-    dispatch(action)
+    const thunk = changeTodolistTC(id, newTitle)
+    dispatch(thunk)
   }, [dispatch])
+
   // изменение фильтров Туду-листа по категориям: All | Active | Completed
   const changeFilter = useCallback((value: filterValuesType, todoListId: string) => {
     const action = changeTodoListFilterAC(value, todoListId)
