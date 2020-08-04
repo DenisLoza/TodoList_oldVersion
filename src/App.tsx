@@ -7,7 +7,7 @@ import {AddItemForm} from "./AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
 import {taskPrioritiesEnum, taskStatusesEnum, taskType} from "./api/todolists-api"
-import {filterValuesType, todoListDomainType} from "./state/todolists-reducer"
+import {filterValuesType, todoListDomainType} from "./state/todolistsReducer"
 
 
 // export type todoListType ={

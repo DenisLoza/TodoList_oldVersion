@@ -11,8 +11,8 @@ import {
   changeTodoListFilterAC,
   changeTodoListTitleAC, filterValuesType,
   removeTodoListAC,
-  todoListsReducer
-} from "./state/todolists-reducer"
+  todolistsReducer
+} from "./state/todolistsReducer"
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "./api/todolists-api"
 
@@ -24,7 +24,7 @@ function AppWithRedusers() {
   let todoListId2 = v1()
 
   // Стартовый стейт туду-листов
-  let [todoList, dispatchTodoListReduser] = useReducer(todoListsReducer, [
+  let [todoList, dispatchTodoListReduser] = useReducer(todolistsReducer, [
     {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
     {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
   ])

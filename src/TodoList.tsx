@@ -1,12 +1,14 @@
-import React, {useCallback} from "react"
+import React, {useCallback, useEffect} from "react"
 import "./TodoList.css"
 import {AddItemForm} from "./AddItemForm"
 import {EditableSpan} from "./EditableSpan"
 import {Button, IconButton} from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import {Task} from "./Task"
-import {filterValuesType} from "./state/todolists-reducer"
+import {filterValuesType} from "./state/todolistsReducer"
 import {taskStatusesEnum, taskType} from "./api/todolists-api"
+import {useDispatch} from "react-redux"
+import {fetchTasksTC} from "./state/tasksReducer"
 
 
 // Типизируем список тасок (id, название, состояние checked)
@@ -32,8 +34,14 @@ type todoListType = {
 }
 
 
-export const TodoList = React.memo ((props: todoListType) => {
+export const TodoList = React.memo((props: todoListType) => {
     // console.log("call TodoList")
+    const dispatch = useDispatch()
+
+    // добавление списка тасок от сервера по id тудулиста
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))
+    }, [])
 
     // Ф-ция добавления новой таски в тудуЛист
     const addNewTask = useCallback((title: string) => {

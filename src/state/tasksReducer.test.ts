@@ -1,7 +1,8 @@
 import {tasksStateType} from "../App"
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasksReducer"
-import {addTodoListAC, removeTodoListAC} from "./todolists-reducer"
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC, tasksReducer} from "./tasksReducer"
+import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolistsReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
+
 
 
 test ("correct task should be deleted from correct array", () => {
@@ -384,4 +385,40 @@ test ("property with todolistId should be deleted", () => {
     expect(keys.length).toBe(1)
     // в выходном массиве НЕ должно быть массива с id="todoListId2", т.е. undefined
     expect(endState["todoListId2"]).not.toBeDefined()
+})
+
+test('empty arrays should be added when we set todolists', () => {
+    const action = setTodoListsAC([
+        {id: "1", title: "title 1", order: 0, addedDate: ""},
+        {id: "2", title: "title 2", order: 0, addedDate: ""}
+    ])
+
+    const endState = tasksReducer({}, action)
+    const keys = Object.keys(endState)
+
+    expect(keys.length).toBe(2)
+    expect(endState['1']).toStrictEqual([])
+    expect(endState['2']).toStrictEqual([])
+})
+
+test('tasks should be added for todolists', () => {
+    const startState: tasksStateType = {
+        "todoListId1": [
+            {
+                id: "1", title: "HTML & CSS", todoListId: "todoListId1",
+                status: taskStatusesEnum.Completed, startDate: "", deadline: "",
+                addedDate: "", order: 0, priority: taskPrioritiesEnum.Low,
+                description: ""
+            }
+        ]
+    }
+    const action = setTasksAC(startState["todoListId1"], "todoListId1")
+
+    const endState = tasksReducer({
+        "todoListId2": [],
+        "todoListId1": [],
+    }, action)
+
+    expect(endState["todoListId1"].length).toBe(1)
+    expect(endState["todoListId2"].length).toBe(0)
 })

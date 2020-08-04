@@ -1,18 +1,16 @@
-import React, {useCallback} from "react"
+import React, {useCallback, useEffect} from "react"
+import {useDispatch, useSelector} from "react-redux"
 import "./App.css"
-import {TodoList} from "./TodoList"
-import {AddItemForm} from "./AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
-import {
-  addTodoListAC,
-  changeTodoListFilterAC,
-  changeTodoListTitleAC, filterValuesType,
-  removeTodoListAC, todoListDomainType,
-} from "./state/todolists-reducer"
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksStateType} from "./state/tasksReducer"
-import {useDispatch, useSelector} from "react-redux"
+import {TodoList} from "./TodoList"
+import {AddItemForm} from "./AddItemForm"
 import {appRootStateType} from "./state/store"
+import {
+  addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC,
+  filterValuesType, todoListDomainType, fetchTodolistsTC
+} from "./state/todolistsReducer"
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksStateType} from "./state/tasksReducer"
 import {taskStatusesEnum} from "./api/todolists-api"
 
 
@@ -23,6 +21,11 @@ function AppWithRedux() {
   // из глобального стейта достаем нужные объекты, т.к. используем общий редьюсер ф-цию (combineReducers)
   const todolists = useSelector<appRootStateType, Array<todoListDomainType>>(state => state.todolists)
   const tasks = useSelector<appRootStateType, tasksStateType>(state => state.tasks)
+
+  // добавление туду листов от сервера
+  useEffect(() => {
+    dispatch(fetchTodolistsTC())
+  },[])
 
   // удаление тасок
   const removeTask = useCallback((id: string, todoListId: string) => {

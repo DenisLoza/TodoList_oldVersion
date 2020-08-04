@@ -2,14 +2,14 @@ import React from "react"
 import {combineReducers, createStore} from "redux"
 import {Provider} from "react-redux"
 import {v1} from "uuid"
-import {todoListDomainType, todoListsReducer} from "../state/todolists-reducer"
+import {todoListDomainType, todolistsReducer} from "../state/todolistsReducer"
 import {tasksReducer, tasksStateType} from "../state/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
 
 // создаем комбинированный редьюсер
 const rootReduser = combineReducers({
     tasks: tasksReducer,
-    todolists: todoListsReducer
+    todolists: todolistsReducer
 })
 // типизация начального стейта
 type AppRootStateType = {

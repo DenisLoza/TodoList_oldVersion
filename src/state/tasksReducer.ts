@@ -1,6 +1,12 @@
-import {addTodoListActionType, removeTodoListActionType, todoListId1, todoListId2} from "./todolists-reducer";
-import {v1} from "uuid";
-import {taskPrioritiesEnum, taskStatusesEnum, taskType} from "../api/todolists-api"
+import {
+    addTodoListActionType,
+    removeTodoListActionType,
+    setTodoListsAC,
+    setTodoListsActionType
+} from "./todolistsReducer"
+import {v1} from "uuid"
+import {taskPrioritiesEnum, taskStatusesEnum, taskType, todolistsAPI} from "../api/todolists-api"
+import {Dispatch} from "redux"
 
 export type tasksStateType = {
     [key: string]: Array<taskType>
@@ -21,15 +27,26 @@ export type changeTaskStatusActionType = {
     status: taskStatusesEnum
     todoListId: string
 }
+export type setTasksActionType = {
+    type: "SET-TASKS"
+    tasks: Array<taskType>
+    todolistId: string
+}
 export type changeTaskTitleActionType = {
     type: "CHANGE-TASK-TITLE"
     taskId: string
     newTitle: string
     todoListId: string
 }
-export type actionsType = removeTaskActionType | addTaskActionType
-    | changeTaskStatusActionType | changeTaskTitleActionType
-    | addTodoListActionType | removeTodoListActionType
+export type actionsType =
+    removeTaskActionType
+    | addTaskActionType
+    | changeTaskStatusActionType
+    | changeTaskTitleActionType
+    | addTodoListActionType
+    | removeTodoListActionType
+    | setTodoListsActionType
+    | setTasksActionType
 
 
 const initialState: tasksStateType = {
@@ -69,9 +86,11 @@ export const tasksReducer = (state: tasksStateType = initialState, action: actio
             // создаем копию всех тасок из todoList, которую нам передал action, а именно "todoListId2"
             const tasks = stateCopy[action.todoListId]
             // создаем новую таску с именем "newName"
-            const newTask: taskType = {id: v1(),  title: action.newTaskName, status: taskStatusesEnum.New,
+            const newTask: taskType = {
+                id: v1(), title: action.newTaskName, status: taskStatusesEnum.New,
                 todoListId: action.todoListId, startDate: "", deadline: "", addedDate: "",
-                order: 0, priority: taskPrioritiesEnum.Low, description: ""}
+                order: 0, priority: taskPrioritiesEnum.Low, description: ""
+            }
             // создаем новый массив всех тасок, а в начало ставим новую таску
             const newTasks = [newTask, ...tasks]
             // в копию стейта кладем измененный список тасок на место "todoListId2"
@@ -85,8 +104,8 @@ export const tasksReducer = (state: tasksStateType = initialState, action: actio
             // остальные таски остануться без изменений
             state[action.todoListId] = tasks
                 .map(t => t.id === action.taskId
-                ? {...t, status: action.status}
-                : t)
+                    ? {...t, status: action.status}
+                    : t)
             return ({...state})
         }
         case "CHANGE-TASK-TITLE": {
@@ -113,6 +132,19 @@ export const tasksReducer = (state: tasksStateType = initialState, action: actio
             delete stateCopy[action.id]
             return stateCopy
         }
+        case "SET-TODOLISTS": {
+            // создаем поверхностную копию стейта
+            const stateCopy = {...state}
+            action.todolists.forEach(tl => {
+                stateCopy[tl.id] = []
+            })
+            return stateCopy
+        }
+        case "SET-TASKS": {
+            const stateCopy = {...state}
+            stateCopy[action.todolistId] = action.tasks
+            return stateCopy
+        }
         default:
             return state
     }
@@ -125,8 +157,21 @@ export const addTaskAC = (newTaskName: string, todoListId: string): addTaskActio
     return {type: "ADD-TASK", newTaskName: newTaskName, todoListId: todoListId}
 }
 export const changeTaskStatusAC = (taskId: string, status: taskStatusesEnum, todoListId: string): changeTaskStatusActionType => {
-    return {type: "CHANGE-TASK-STATUS", taskId: taskId, status: status, todoListId: todoListId }
+    return {type: "CHANGE-TASK-STATUS", taskId: taskId, status: status, todoListId: todoListId}
 }
 export const changeTaskTitleAC = (taskId: string, newTitle: string, todoListId: string): changeTaskTitleActionType => {
-    return {type: "CHANGE-TASK-TITLE", taskId: taskId, newTitle: newTitle, todoListId: todoListId }
+    return {type: "CHANGE-TASK-TITLE", taskId: taskId, newTitle: newTitle, todoListId: todoListId}
+}
+export const setTasksAC = (tasks: Array<taskType>, todolistId: string): setTasksActionType => {
+    return {type: "SET-TASKS", tasks: tasks, todolistId: todolistId}
+}
+
+// THUNK CREATOR ф-ции (возвращают Thunk)
+export const fetchTasksTC = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.getTasks(todolistId)
+            .then((res) => {
+                dispatch(setTasksAC(res.data.items, todolistId))
+            })
+    }
 }
