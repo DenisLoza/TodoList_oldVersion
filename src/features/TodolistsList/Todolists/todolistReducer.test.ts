@@ -6,7 +6,7 @@ import {
     removeTodoListAC, setTodoListsAC, todoListDomainType,
     todolistsReducer,
 } from "./todolistsReducer"
-import {todolistType} from "../api/todolists-api"
+import {todolistType} from "../../../api/todolists-api"
 
 let todoListId1: string
 let todoListId2: string

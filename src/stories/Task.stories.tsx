@@ -1,5 +1,5 @@
 import React from "react"
-import {Task} from "../Task"
+import {Task} from "../features/TodolistsList/Todolists/Task/Task"
 import {action} from "@storybook/addon-actions"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
 

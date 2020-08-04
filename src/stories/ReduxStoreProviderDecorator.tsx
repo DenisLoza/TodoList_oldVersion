@@ -2,8 +2,8 @@ import React from "react"
 import {combineReducers, createStore} from "redux"
 import {Provider} from "react-redux"
 import {v1} from "uuid"
-import {todoListDomainType, todolistsReducer} from "../state/todolistsReducer"
-import {tasksReducer, tasksStateType} from "../state/tasksReducer"
+import {todoListDomainType, todolistsReducer} from "../features/TodolistsList/Todolists/todolistsReducer"
+import {tasksReducer, tasksStateType} from "../features/TodolistsList/Todolists/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
 
 // создаем комбинированный редьюсер

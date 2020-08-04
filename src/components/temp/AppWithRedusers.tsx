@@ -1,9 +1,9 @@
 import React, {useReducer} from "react"
-import "./App.css"
-import {TodoList} from "./TodoList"
+import "../../app/App.css"
+import {TodoList} from "../../features/TodolistsList/Todolists/TodoList"
 // Библиотека для генерации уникальных id
 import {v1} from "uuid"
-import {AddItemForm} from "./AddItemForm"
+import {AddItemForm} from "../AddItemForm/AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
 import {
@@ -12,9 +12,9 @@ import {
   changeTodoListTitleAC, filterValuesType,
   removeTodoListAC,
   todolistsReducer
-} from "./state/todolistsReducer"
-import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "./state/tasksReducer"
-import {taskPrioritiesEnum, taskStatusesEnum} from "./api/todolists-api"
+} from "../../features/TodolistsList/Todolists/todolistsReducer"
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "../../features/TodolistsList/Todolists/tasksReducer"
+import {taskPrioritiesEnum, taskStatusesEnum} from "../../api/todolists-api"
 
 
 function AppWithRedusers() {

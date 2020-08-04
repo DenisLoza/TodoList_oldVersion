@@ -1,7 +1,7 @@
-import {tasksStateType} from "../App"
+import {tasksStateType} from "../../../components/temp/App"
 import {addTaskAC, updateTaskAC, removeTaskAC, setTasksAC, tasksReducer} from "./tasksReducer"
 import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolistsReducer"
-import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
+import {taskPrioritiesEnum, taskStatusesEnum} from "../../../api/todolists-api"
 
 
 test ("correct task should be deleted from correct array", () => {

@@ -1,13 +1,13 @@
 import React, {useState} from "react"
-import "./App.css"
-import {TodoList} from "./TodoList"
+import "../../app/App.css"
+import {TodoList} from "../../features/TodolistsList/Todolists/TodoList"
 // Библиотека для генерации уникальных id
 import {v1} from "uuid"
-import {AddItemForm} from "./AddItemForm"
+import {AddItemForm} from "../AddItemForm/AddItemForm"
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core"
 import {ClearAll} from "@material-ui/icons"
-import {taskPrioritiesEnum, taskStatusesEnum, taskType} from "./api/todolists-api"
-import {filterValuesType, todoListDomainType} from "./state/todolistsReducer"
+import {taskPrioritiesEnum, taskStatusesEnum, taskType} from "../../api/todolists-api"
+import {filterValuesType, todoListDomainType} from "../../features/TodolistsList/Todolists/todolistsReducer"
 
 
 // export type todoListType ={

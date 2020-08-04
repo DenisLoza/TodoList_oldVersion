@@ -1,5 +1,50 @@
 import axios from "axios"
 
+
+// подготавливаем специальный объект instance, который передает св-ва в axios
+const instance = axios.create({
+    // базовый baseURL, который подставляется в начало всех ссылок автоматически
+    baseURL: "https://social-network.samuraijs.com/api/1.1/",
+    // определяет необходимость аутентификации при выполнении междоменного CORS запроса
+    withCredentials: true,
+    // передает уникальный ключ для разрешения на изменения на сервере
+    headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
+})
+
+// созадем объект todolistsAPI с вложенными методами
+export const todolistsAPI = {
+    getTodolists() {
+        const promise = instance.get <Array<todolistType>> (`todo-lists`)
+        return promise
+    },
+    createTodolist(title: string) {
+        const promise = instance.post <ResponseType<{item: todolistType}>> (`todo-lists`, {title: title})
+        return promise
+    },
+    deleteTodolist(id: string) {
+        const promise = instance.delete <ResponseType> (`todo-lists/${id}`)
+        return promise
+    },
+    updateTodolistTitle(id: string, title: string) {
+        const promise = instance.put <ResponseType> (`todo-lists/${id}`, {title: title})
+        return promise
+    },
+    getTasks(todolistId: string) {
+        const promise = instance.get  <getTasksType>(`todo-lists/${todolistId}/tasks`)
+        return promise
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    createTask(todolistId: string, taskTitle: string) {
+        return instance.post  <ResponseType<{item: taskType}>> (`todo-lists/${todolistId}/tasks`, {title: taskTitle})
+    },
+    updateTask(todolistId: string, taskId: string, model: updateTaskType) {
+        return instance.put  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`, model)
+    }
+}
+
+// TYPES
 export type todolistType = {
     id: string
     title: string
@@ -43,7 +88,6 @@ export enum taskPrioritiesEnum {
     Urgently = 3,
     Later = 4
 }
-
 export type taskType = {
     description: string
     title: string
@@ -68,47 +112,4 @@ export type updateTaskType = {
     priority: taskPrioritiesEnum
     startDate: string
     deadline: string
-}
-
-// подготавливаем специальный объект instance, который передает св-ва в axios
-const instance = axios.create({
-    // базовый baseURL, который подставляется в начало всех ссылок автоматически
-    baseURL: "https://social-network.samuraijs.com/api/1.1/",
-    // определяет необходимость аутентификации при выполнении междоменного CORS запроса
-    withCredentials: true,
-    // передает уникальный ключ для разрешения на изменения на сервере
-    headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
-})
-
-// созадем объект todolistsAPI с вложенными методами
-export const todolistsAPI = {
-    getTodolists() {
-        const promise = instance.get <Array<todolistType>> (`todo-lists`)
-        return promise
-    },
-    createTodolist(title: string) {
-        const promise = instance.post <ResponseType<{item: todolistType}>> (`todo-lists`, {title: title})
-        return promise
-    },
-    deleteTodolist(id: string) {
-        const promise = instance.delete <ResponseType> (`todo-lists/${id}`)
-        return promise
-    },
-    updateTodolistTitle(id: string, title: string) {
-        const promise = instance.put <ResponseType> (`todo-lists/${id}`, {title: title})
-        return promise
-    },
-    getTasks(todolistId: string) {
-        const promise = instance.get  <getTasksType>(`todo-lists/${todolistId}/tasks`)
-        return promise
-    },
-    deleteTask(todolistId: string, taskId: string) {
-        return instance.delete  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`)
-    },
-    createTask(todolistId: string, taskTitle: string) {
-        return instance.post  <ResponseType<{item: taskType}>> (`todo-lists/${todolistId}/tasks`, {title: taskTitle})
-    },
-    updateTask(todolistId: string, taskId: string, model: updateTaskType) {
-        return instance.put  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`, model)
-    }
 }

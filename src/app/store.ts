@@ -1,6 +1,6 @@
 import {applyMiddleware, combineReducers, createStore} from "redux"
-import {todolistsReducer} from "./todolistsReducer"
-import {tasksReducer} from "./tasksReducer"
+import {todolistsReducer} from "../features/TodolistsList/Todolists/todolistsReducer"
+import {tasksReducer} from "../features/TodolistsList/Todolists/tasksReducer"
 import thunk from "redux-thunk"
 
 // type appRootStateType = {
