@@ -25,8 +25,8 @@ function AppWithRedusers() {
 
   // Стартовый стейт туду-листов
   let [todoList, dispatchTodoListReduser] = useReducer(todolistsReducer, [
-    {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
-    {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
+    {id: todoListId1, title: "Whats to learn:", filter: "All", entityStatus: "idle", addedDate: "", order: 0},
+    {id: todoListId2, title: "Whats to buy:", filter: "All", entityStatus: "idle", addedDate: "", order: 1}
   ])
 
   // Стартовый стейт тасок
@@ -173,10 +173,8 @@ function AppWithRedusers() {
               return (
                   <Grid item>
                     <Paper style={{padding: "10px"}}>
-                      <TodoList id={tl.id}
-                                key={tl.id}
-                                title={tl.title}
-                                filter={tl.filter} /*Св-во передает значение класса для активной кнопки all-active-comp*/
+                      <TodoList key={tl.id}
+                                todolist={tl}
                                 tasks={tasksForTodoList}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}

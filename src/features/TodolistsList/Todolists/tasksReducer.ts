@@ -6,6 +6,13 @@ import {
 import {taskPrioritiesEnum, taskStatusesEnum, taskType, todolistsAPI, updateTaskType} from "../../../api/todolists-api"
 import {Dispatch} from "redux"
 import {appRootStateType} from "../../../app/store"
+import {
+    actionsStatusErrorTypes,
+    setAppErrorAC,
+    setErrorACType,
+    setAppStatusAC,
+    setStatusACType
+} from "../../../app/appReducer"
 
 
 const initialState: tasksStateType = {
@@ -114,10 +121,14 @@ export const setTasksAC = (tasks: Array<taskType>, todolistId: string) => {
 // THUNK CREATOR ф-ции (возвращают Thunk)
 // запрашивает список тасок у сервера по id туду листа
 export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<actionsType>) => {
+    return (dispatch: Dispatch<actionsType | setStatusACType>) => {
+        // пока ответ от сервера НЕ получен отправь статус "loading"
+        dispatch(setAppStatusAC("loading"))
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
                 dispatch(setTasksAC(res.data.items, todolistId))
+                // когда ответ от сервера получен отправь статус "succeeded"
+                dispatch(setAppStatusAC("succeeded"))
             })
     }
 }
@@ -132,10 +143,23 @@ export const removeTaskTC = (taskId: string, todolistId: string) => {
 }
 // добавляет новую таску на сервер по id туду листа
 export const addTaskTC = (title: string, todolistId: string) => {
-    return (dispatch: Dispatch<actionsType>) => {
+    return (dispatch: Dispatch<actionsType | actionsStatusErrorTypes>) => {
+        dispatch(setAppStatusAC("loading"))
         todolistsAPI.createTask(todolistId, title)
             .then((res) => {
-                dispatch(addTaskAC(res.data.data.item))
+                // если при запросе ответ серевера 0, тогда добавь таску
+                if (res.data.resultCode === 0) {
+                    dispatch(addTaskAC(res.data.data.item))
+                    dispatch(setAppStatusAC("succeeded"))
+                } else {
+                    // если при запросе в ответе серевера есть сообщение(т.е. его длинна больше 0), тогда добавь таску
+                    if (res.data.messages.length) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC("some error"))
+                    }
+                    dispatch(setAppStatusAC("failed"))
+                }
             })
     }
 }

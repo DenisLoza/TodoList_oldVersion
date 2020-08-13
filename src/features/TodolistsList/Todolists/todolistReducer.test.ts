@@ -1,12 +1,13 @@
 import {v1} from "uuid"
 import {
-    addTodoListAC,
+    addTodoListAC, changeTodoListEntityStatusAC,
     changeTodoListFilterAC,
     changeTodoListTitleAC, filterValuesType,
     removeTodoListAC, setTodoListsAC, todoListDomainType,
     todolistsReducer,
 } from "./todolistsReducer"
 import {todolistType} from "../../../api/todolists-api"
+import {requestStatusType} from "../../../app/appReducer"
 
 let todoListId1: string
 let todoListId2: string
@@ -19,8 +20,8 @@ beforeEach(() => {
     todoListId2 = v1()
     // Начальные значения: два объекта в массиве
     startState = [
-        {id: todoListId1, title: "Whats to learn:", filter: "All", addedDate: "", order: 0},
-        {id: todoListId2, title: "Whats to buy:", filter: "All", addedDate: "", order: 1}
+        {id: todoListId1, title: "Whats to learn:", filter: "All", entityStatus: "idle", addedDate: "", order: 0},
+        {id: todoListId2, title: "Whats to buy:", filter: "All", entityStatus: "idle", addedDate: "", order: 1}
     ]
 })
 
@@ -93,4 +94,16 @@ test("todoLists should be set to the state", () => {
     const endState = todolistsReducer([], action)
     // проверочные значения: в стейте будет сидеть два объекта
     expect(endState.length).toBe(2)
+})
+// ТЕСТ. ИЗМЕНЕНИЕ СТАТУСА ЗАГРУЗКИ TODO ЛИСТА
+test("correct entity status of todoList should be change", () => {
+
+    let newStatus: requestStatusType = "loading"
+
+    const action = changeTodoListEntityStatusAC(newStatus, todoListId2)
+
+    const endState = todolistsReducer(startState, action)
+
+    expect(endState[0].entityStatus).toBe("idle")
+    expect(endState[1].entityStatus).toBe("loading")
 })

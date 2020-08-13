@@ -16,7 +16,8 @@ import {Container, Grid, Paper} from "@material-ui/core"
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm"
 import {TodoList} from "./Todolists/TodoList"
 
-export const TodolistList: React.FC = (props) => {
+export const TodolistList: React.FC<propsType> = ({demo = false}) => {
+
     // передаем dispatch в редьюсеры с помощью react-redux
     const dispatch = useDispatch()
     // из глобального стейта достаем нужные объекты, т.к. используем общий редьюсер ф-цию (combineReducers)
@@ -25,6 +26,9 @@ export const TodolistList: React.FC = (props) => {
 
     // добавление списка туду листов из сервера
     useEffect(() => {
+        if (demo) {
+            return
+        }
         dispatch(fetchTodolistsTC())
     }, [])
 
@@ -89,10 +93,8 @@ export const TodolistList: React.FC = (props) => {
                     return (
                         <Grid item>
                             <Paper style={{padding: "10px"}}>
-                                <TodoList id={tl.id}
+                                <TodoList todolist={tl}
                                           key={tl.id}
-                                          title={tl.title}
-                                          filter={tl.filter} /*Св-во передает значение класса для активной кнопки all-active-comp*/
                                           tasks={tasksForTodoList}
                                           removeTask={removeTask}
                                           changeFilter={changeFilter}
@@ -101,6 +103,7 @@ export const TodolistList: React.FC = (props) => {
                                           removeTodoList={removeTodoList}
                                           changeTitle={changeTitle}
                                           changeTodoListTitle={changeTodoListTitle}
+                                          demo={demo}
                                 />
                             </Paper>
                         </Grid>
@@ -109,4 +112,8 @@ export const TodolistList: React.FC = (props) => {
             </Grid>
         </Container>
     )
+}
+
+type propsType = {
+    demo?: boolean
 }

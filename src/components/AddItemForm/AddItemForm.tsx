@@ -2,11 +2,8 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
 import './AddItemForm.module.css'
 import {Button, TextField} from "@material-ui/core"
 
-type PropsType = {
-    addItem: (NewTaskTitle: string) => void
-}
 
-export const AddItemForm = React.memo ((props: PropsType) => {
+export const AddItemForm = React.memo (({addItem, disabled = false}: addItemFormType) => {
     // console.log("call AddItemForm")
 
     // Хук3 следит за перерисовкой названия для новой задачи заданное через input
@@ -15,11 +12,11 @@ export const AddItemForm = React.memo ((props: PropsType) => {
     let [error, setError] = useState<string | null>(null) /*Изначально ошибки в стейте нет=null*/
 
     // Функция добавляет новое название для задачи и обнуляет поле ввода после добавления названия новой задачи
-    function addItem() {
+    function addItemHandler() {
         console.log("call addItem")
         let trimedTitle = NewTaskTitle.trim() /*Функция убирает все пробелы из строки и то, что осталось засовывает в переменную */
         if (trimedTitle) {               /*Таска добавляется если строка не пустая*/
-            props.addItem(trimedTitle) /*Добавляется таска, но убираются слева и справа все пробелы*/
+            addItem(trimedTitle) /*Добавляется таска, но убираются слева и справа все пробелы*/
             setNewTaskTitle("")
         } else {
             setError("Title is required!")
@@ -41,7 +38,7 @@ export const AddItemForm = React.memo ((props: PropsType) => {
         if (e.charCode === 13) {
             console.log("run_onKeyPressHandler_ifCharCode=13")
             let trimedTitle = NewTaskTitle.trim()
-            trimedTitle ? props.addItem(NewTaskTitle) : setError("Title is required!")
+            trimedTitle ? addItem(NewTaskTitle) : setError("Title is required!")
             setNewTaskTitle("")
         }
     }
@@ -49,9 +46,9 @@ export const AddItemForm = React.memo ((props: PropsType) => {
     return (
         // Вывод названия Списка дел и поле ввода input с кнопкой "+"
         <div className="App">
-
             <div>
                 <TextField label="add new ..."
+                           disabled={disabled}
                            value={NewTaskTitle}
                            id="standard-basic"
                            onChange={onNewTitleChangeHandler}
@@ -60,11 +57,17 @@ export const AddItemForm = React.memo ((props: PropsType) => {
                            error={!!error}
                            helperText={error}
                 />
-                <Button onClick={addItem}
+                <Button onClick={addItemHandler}
                         variant={"contained"}
-                        color={"primary"}>+
+                        color={"primary"}
+                        disabled={disabled}
+                > +
                 </Button>
             </div>
         </div>
     )
 })
+export type addItemFormType = {
+    addItem: (NewTaskTitle: string) => void
+    disabled?: boolean
+}
