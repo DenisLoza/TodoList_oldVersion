@@ -1,7 +1,7 @@
 import {v1} from "uuid"
 import {todolistType, todolistsAPI} from "../../../api/todolists-api"
 import {Dispatch} from "redux"
-import {requestStatusType, setAppStatusAC, setErrorACType, setStatusACType} from "../../../app/appReducer"
+import {requestStatusType, setAppStatusAC, setAppErrorACType, setAppStatusACType} from "../../../app/appReducer"
 
 
 export let todoListId1 = v1()
@@ -130,6 +130,6 @@ export type todoListDomainType = todolistType & {
     entityStatus: requestStatusType
 }
 type dispatchType =
-    setErrorACType
-    | setStatusACType
+    setAppErrorACType
+    | setAppStatusACType
     | actionsType

@@ -1,16 +1,16 @@
 import React from "react"
-import {Task} from "../features/TodolistsList/Todolists/Task/Task"
+import {Task} from "../features/Todo/Tasks/Task"
 import {action} from "@storybook/addon-actions"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
 
 
 export default {
-    title: "Task Component",
+    title: "Tasks Component",
     component: Task
 }
 const changeTaskStatusCallback = action("Status changed")
 const changeTitleCallback = action("Title changed")
-const removeTaskCallback = action("Task removed")
+const removeTaskCallback = action("Tasks removed")
 
 export const TaskBaseExample = () => {
     return <>

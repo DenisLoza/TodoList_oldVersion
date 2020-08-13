@@ -5,7 +5,7 @@ const initialState: initialStateAppReducerType = {
     error: null
 }
 
-export const appReducer = (state= initialState, action: actionsStatusErrorTypes): initialStateAppReducerType => {
+export const appReducer = (state= initialState, action: actionsStatusAppErrorTypes): initialStateAppReducerType => {
     switch (action.type) {
         case "APP/SET-STATUS":
             return {...state, status: action.status}
@@ -25,8 +25,8 @@ export type initialStateAppReducerType = {
     // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
     error: string | null
 }
-export type setErrorACType = ReturnType<typeof setAppErrorAC>
-export type setStatusACType = ReturnType<typeof setAppStatusAC>
-export type actionsStatusErrorTypes =
-    setErrorACType
-    | setStatusACType
+export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
+export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
+export type actionsStatusAppErrorTypes =
+    setAppErrorACType
+    | setAppStatusACType

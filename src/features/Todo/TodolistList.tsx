@@ -10,7 +10,7 @@ import {
     removeTodolistTC,
     todoListDomainType
 } from "./Todolists/todolistsReducer"
-import {addTaskTC, removeTaskTC, tasksStateType, updateTaskTC} from "./Todolists/tasksReducer"
+import {addTaskTC, removeTaskTC, tasksStateType, updateTaskTC} from "./Tasks/tasksReducer"
 import {taskStatusesEnum} from "../../api/todolists-api"
 import {Container, Grid, Paper} from "@material-ui/core"
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm"

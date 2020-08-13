@@ -2,17 +2,17 @@ import {
     addTodoListActionType,
     removeTodoListActionType,
     setTodoListsActionType
-} from "./todolistsReducer"
+} from "../Todolists/todolistsReducer"
 import {taskPrioritiesEnum, taskStatusesEnum, taskType, todolistsAPI, updateTaskType} from "../../../api/todolists-api"
 import {Dispatch} from "redux"
 import {appRootStateType} from "../../../app/store"
 import {
-    actionsStatusErrorTypes,
     setAppErrorAC,
-    setErrorACType,
     setAppStatusAC,
-    setStatusACType
+    setAppErrorACType,
+    setAppStatusACType
 } from "../../../app/appReducer"
+import {handleServerAppError, handleServerNetworkError} from "../../../Utils/errorUtils"
 
 
 const initialState: tasksStateType = {
@@ -121,7 +121,7 @@ export const setTasksAC = (tasks: Array<taskType>, todolistId: string) => {
 // THUNK CREATOR ф-ции (возвращают Thunk)
 // запрашивает список тасок у сервера по id туду листа
 export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<actionsType | setStatusACType>) => {
+    return (dispatch: dispatchType) => {
         // пока ответ от сервера НЕ получен отправь статус "loading"
         dispatch(setAppStatusAC("loading"))
         todolistsAPI.getTasks(todolistId)
@@ -134,7 +134,7 @@ export const fetchTasksTC = (todolistId: string) => {
 }
 // удаляет таску с сервера по id таски и id туду листа
 export const removeTaskTC = (taskId: string, todolistId: string) => {
-    return (dispatch: Dispatch<actionsType>) => {
+    return (dispatch: dispatchType) => {
         todolistsAPI.deleteTask(todolistId, taskId)
             .then((res) => {
                 dispatch(removeTaskAC(taskId, todolistId))
@@ -143,7 +143,7 @@ export const removeTaskTC = (taskId: string, todolistId: string) => {
 }
 // добавляет новую таску на сервер по id туду листа
 export const addTaskTC = (title: string, todolistId: string) => {
-    return (dispatch: Dispatch<actionsType | actionsStatusErrorTypes>) => {
+    return (dispatch: dispatchType) => {
         dispatch(setAppStatusAC("loading"))
         todolistsAPI.createTask(todolistId, title)
             .then((res) => {
@@ -152,20 +152,17 @@ export const addTaskTC = (title: string, todolistId: string) => {
                     dispatch(addTaskAC(res.data.data.item))
                     dispatch(setAppStatusAC("succeeded"))
                 } else {
-                    // если при запросе в ответе серевера есть сообщение(т.е. его длинна больше 0), тогда добавь таску
-                    if (res.data.messages.length) {
-                        dispatch(setAppErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(setAppErrorAC("some error"))
-                    }
-                    dispatch(setAppStatusAC("failed"))
+                    handleServerAppError(res.data, dispatch)
                 }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
 // изменяем таску на сервере по id таски и id туду листа
 export const updateTaskTC = (taskId: string, domainModel: updateDomainTaskModelType, todolistId: string) => {
-    return (dispatch: Dispatch<actionsType>, getState: () => appRootStateType) => {
+    return (dispatch: dispatchType, getState: () => appRootStateType) => {
         const state = getState()
         // из стейта берем ту таску, в которой нам необходимо поменять статус
         const task = state.tasks[todolistId].find(t => t.id === taskId)
@@ -187,7 +184,14 @@ export const updateTaskTC = (taskId: string, domainModel: updateDomainTaskModelT
         }
         todolistsAPI.updateTask(todolistId, taskId, apiModel)
             .then((res) => {
-                dispatch(updateTaskAC(taskId, domainModel, todolistId))
+                if (res.data.resultCode === 0) {
+                    dispatch(updateTaskAC(taskId, domainModel, todolistId))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -214,3 +218,4 @@ export type actionsType =
 export type tasksStateType = {
     [key: string]: Array<taskType>
 }
+type dispatchType = Dispatch<actionsType | setAppStatusACType | setAppErrorACType>

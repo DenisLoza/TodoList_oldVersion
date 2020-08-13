@@ -1,6 +1,6 @@
 import React, {useReducer} from "react"
 import "../../app/App.css"
-import {TodoList} from "../../features/TodolistsList/Todolists/TodoList"
+import {TodoList} from "../../features/Todo/Todolists/TodoList"
 // Библиотека для генерации уникальных id
 import {v1} from "uuid"
 import {AddItemForm} from "../AddItemForm/AddItemForm"
@@ -12,8 +12,8 @@ import {
   changeTodoListTitleAC, filterValuesType,
   removeTodoListAC,
   todolistsReducer
-} from "../../features/TodolistsList/Todolists/todolistsReducer"
-import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "../../features/TodolistsList/Todolists/tasksReducer"
+} from "../../features/Todo/Todolists/todolistsReducer"
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "../../features/Todo/Tasks/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../../api/todolists-api"
 
 

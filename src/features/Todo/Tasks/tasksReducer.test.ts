@@ -1,6 +1,6 @@
 import {tasksStateType} from "../../../components/temp/App"
 import {addTaskAC, updateTaskAC, removeTaskAC, setTasksAC, tasksReducer} from "./tasksReducer"
-import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolistsReducer"
+import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "../Todolists/todolistsReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../../../api/todolists-api"
 
 

@@ -18,15 +18,15 @@ export const todolistsAPI = {
         return promise
     },
     createTodolist(title: string) {
-        const promise = instance.post <ResponseType<{item: todolistType}>> (`todo-lists`, {title: title})
+        const promise = instance.post <responseType<{item: todolistType}>> (`todo-lists`, {title: title})
         return promise
     },
     deleteTodolist(id: string) {
-        const promise = instance.delete <ResponseType> (`todo-lists/${id}`)
+        const promise = instance.delete <responseType> (`todo-lists/${id}`)
         return promise
     },
     updateTodolistTitle(id: string, title: string) {
-        const promise = instance.put <ResponseType> (`todo-lists/${id}`, {title: title})
+        const promise = instance.put <responseType> (`todo-lists/${id}`, {title: title})
         return promise
     },
     getTasks(todolistId: string) {
@@ -34,13 +34,13 @@ export const todolistsAPI = {
         return promise
     },
     deleteTask(todolistId: string, taskId: string) {
-        return instance.delete  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`)
+        return instance.delete  <responseType> (`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     createTask(todolistId: string, taskTitle: string) {
-        return instance.post  <ResponseType<{item: taskType}>> (`todo-lists/${todolistId}/tasks`, {title: taskTitle})
+        return instance.post  <responseType<{item: taskType}>> (`todo-lists/${todolistId}/tasks`, {title: taskTitle})
     },
     updateTask(todolistId: string, taskId: string, model: updateTaskType) {
-        return instance.put  <ResponseType> (`todo-lists/${todolistId}/tasks/${taskId}`, model)
+        return instance.put  <responseType> (`todo-lists/${todolistId}/tasks/${taskId}`, model)
     }
 }
 
@@ -70,7 +70,7 @@ type updateTodolistTitleType = {
 }
 // создали обобщенный тип, где D может меняться (это D мы уточняем в дженерике
 // или оставляем по-умолчанию {} )
-type ResponseType<D = {}> = {
+export type responseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D
