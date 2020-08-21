@@ -7,7 +7,6 @@ import {taskPrioritiesEnum, taskStatusesEnum, taskType, todolistsAPI, updateTask
 import {Dispatch} from "redux"
 import {appRootStateType} from "../../../app/store"
 import {
-    setAppErrorAC,
     setAppStatusAC,
     setAppErrorACType,
     setAppStatusACType
@@ -32,7 +31,7 @@ const initialState: tasksStateType = {
     // ]
 }
 
-export const tasksReducer = (state: tasksStateType = initialState, action: actionsType): tasksStateType => {
+export const tasksReducer = (state = initialState, action: actionsType): tasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
             // создаем поверхностную копию стейта

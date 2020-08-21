@@ -1,6 +1,6 @@
 import React from "react"
 import AppWithRedux from "../app/AppWithRedux"
-import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator"
+import {ReduxStoreProviderDecorator} from "../app/ReduxStoreProviderDecorator"
 
 export default {
     title: "AppWithRedux Component",

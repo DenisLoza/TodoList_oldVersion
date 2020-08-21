@@ -3,6 +3,7 @@ import {todolistsReducer} from "../features/Todo/Todolists/todolistsReducer"
 import {tasksReducer} from "../features/Todo/Tasks/tasksReducer"
 import thunk from "redux-thunk"
 import {appReducer} from "./appReducer"
+import {authReducer} from "../features/Login/AuthReducer"
 
 // type appRootStateType = {
 //     todolists: Array<todoListType>
@@ -15,7 +16,8 @@ export type appRootStateType = ReturnType<typeof rootReducer>
 export const rootReducer = combineReducers({
     todolists: todolistsReducer,
     tasks: tasksReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 // создаем стор и передаем туда общий редьюсер и промежуточный слой для работы с thunk ф-циями
 // applyMiddleware - это преобразователь thunk ф-ций в объекты

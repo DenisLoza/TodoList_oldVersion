@@ -2,6 +2,7 @@ import {v1} from "uuid"
 import {todolistType, todolistsAPI} from "../../../api/todolists-api"
 import {Dispatch} from "redux"
 import {requestStatusType, setAppStatusAC, setAppErrorACType, setAppStatusACType} from "../../../app/appReducer"
+import {handleServerNetworkError} from "../../../Utils/errorUtils"
 
 
 export let todoListId1 = v1()
@@ -77,6 +78,9 @@ export const fetchTodolistsTC = () => {
                 dispatch(setTodoListsAC(res.data))
                 // когда ответ от сервера получен отправь статус "succeeded"
                 dispatch(setAppStatusAC("succeeded"))
+            })
+            .catch(error => {
+                handleServerNetworkError(error,dispatch)
             })
     }
 }

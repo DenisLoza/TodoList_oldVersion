@@ -5,9 +5,9 @@ import {v1} from "uuid"
 import {todolistsReducer} from "../features/Todo/Todolists/todolistsReducer"
 import {tasksReducer} from "../features/Todo/Tasks/tasksReducer"
 import {taskPrioritiesEnum, taskStatusesEnum} from "../api/todolists-api"
-import {appRootStateType} from "../app/store"
+import {appRootStateType} from "./store"
 import thunk from "redux-thunk"
-import {appReducer} from "../app/appReducer"
+import {appReducer} from "./appReducer"
 
 // создаем комбинированный редьюсер
 const rootReducer = combineReducers({
@@ -55,7 +55,11 @@ const initialGlobalState: appRootStateType = {
     },
     app: {
         error: null,
-        status: "idle"
+        status: "idle",
+        isInitialized: false
+    },
+    auth: {
+        isLoggedIn: false
     }
 }
 // в качестве стора передаем обобщенный редьюсер и инициализационный стейт

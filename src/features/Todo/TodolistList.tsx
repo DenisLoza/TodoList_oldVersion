@@ -15,6 +15,7 @@ import {taskStatusesEnum} from "../../api/todolists-api"
 import {Container, Grid, Paper} from "@material-ui/core"
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm"
 import {TodoList} from "./Todolists/TodoList"
+import { Redirect } from "react-router-dom"
 
 export const TodolistList: React.FC<propsType> = ({demo = false}) => {
 
@@ -23,10 +24,11 @@ export const TodolistList: React.FC<propsType> = ({demo = false}) => {
     // из глобального стейта достаем нужные объекты, т.к. используем общий редьюсер ф-цию (combineReducers)
     const todolists = useSelector<appRootStateType, Array<todoListDomainType>>(state => state.todolists)
     const tasks = useSelector<appRootStateType, tasksStateType>(state => state.tasks)
+    const isLoggedIn = useSelector<appRootStateType, boolean>(state => state.auth.isLoggedIn)
 
     // добавление списка туду листов из сервера
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn) {
             return
         }
         dispatch(fetchTodolistsTC())
@@ -79,6 +81,11 @@ export const TodolistList: React.FC<propsType> = ({demo = false}) => {
         const action = changeTodoListFilterAC(value, todoListId)
         dispatch(action)
     }, [dispatch])
+
+
+    if (!isLoggedIn) {
+        return <Redirect to={"/login"} />
+    }
 
     return (
         <Container fixed>

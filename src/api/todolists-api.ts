@@ -44,7 +44,29 @@ export const todolistsAPI = {
     }
 }
 
+export const authAPI = {
+    // передаем объект, который будет содержать необходимые данные согласно типу loginParamsType
+    login(data: loginParamsType) {
+        const promise = instance.post <responseType<{userId?: number}>> (`auth/login`, data)
+        return promise
+    },
+    logout() {
+        const promise = instance.delete <responseType<{userId?: number}>> (`auth/login`)
+        return promise
+    },
+    me() {
+        const promise = instance.get <responseType<{id: number, email: string, login: string}>> (`auth/me`)
+        return promise
+    }
+}
+
 // TYPES
+export type loginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
 export type todolistType = {
     id: string
     title: string
